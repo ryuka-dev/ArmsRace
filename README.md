@@ -17,7 +17,7 @@ dotnet build RandomWeaponPerLevel.csproj -c Release
 ```
 
 With `-p:DeployToSulfurProfile=true` the build also copies the DLL into `Thunderstore/` and
-into the profile's `BepInEx/plugins/Arms Race/`, together with `Thunderstore/lang/`.
+into the profile's `BepInEx/plugins/Random Weapon Per Level/`, together with `Thunderstore/lang/`.
 
 The game adds optional parameters to methods from time to time. Source that calls them keeps
 compiling, but a DLL built against the previous game build no longer binds

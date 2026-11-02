@@ -84,9 +84,9 @@
     <ItemGroup>
       <LangFiles Include="$(ThunderstoreDir)\lang\*.json" />
     </ItemGroup>
-    <MakeDir Directories="$(SulfurBepInExPluginsDir)\Arms Race" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SulfurBepInExPluginsDir)\Arms Race" />
+    <MakeDir Directories="$(SulfurBepInExPluginsDir)\Random Weapon Per Level" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SulfurBepInExPluginsDir)\Random Weapon Per Level" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ThunderstoreDir)" />
-    <Copy SourceFiles="@(LangFiles)" DestinationFolder="$(SulfurBepInExPluginsDir)\Arms Race\lang" Condition="'@(LangFiles)' != ''" />
+    <Copy SourceFiles="@(LangFiles)" DestinationFolder="$(SulfurBepInExPluginsDir)\Random Weapon Per Level\lang" Condition="'@(LangFiles)' != ''" />
   </Target>
 </Project>
