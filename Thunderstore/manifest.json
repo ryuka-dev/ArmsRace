@@ -1,0 +1,9 @@
+{
+  "name": "ArmsRace",
+  "version_number": "1.0.2",
+  "website_url": "https://github.com/ryuka-dev/ryuka-sulfur-mods",
+  "description": "Kill enemies, get randomized weapons, and Arms Race your way through SULFUR.",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2100"
+  ]
+}

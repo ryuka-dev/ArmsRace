@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <SulfurGameDir Condition="'$(SulfurGameDir)' == ''">D:\SteamLibrary\steamapps\common\SULFUR</SulfurGameDir>
+    <SulfurManagedDir Condition="'$(SulfurManagedDir)' == ''">$(SulfurGameDir)\Sulfur_Data\Managed</SulfurManagedDir>
+    <SulfurGaleProfileDir Condition="'$(SulfurGaleProfileDir)' == ''">C:\Users\LingYun67\AppData\Roaming\com.kesomannen.gale\sulfur\profiles\ArmsRace开发</SulfurGaleProfileDir>
+    <SulfurBepInExCoreDir Condition="'$(SulfurBepInExCoreDir)' == ''">$(SulfurGaleProfileDir)\BepInEx\core</SulfurBepInExCoreDir>
+    <SulfurBepInExPluginsDir Condition="'$(SulfurBepInExPluginsDir)' == ''">$(SulfurGaleProfileDir)\BepInEx\plugins</SulfurBepInExPluginsDir>
+    <ThunderstoreDir Condition="'$(ThunderstoreDir)' == ''">$(MSBuildThisFileDirectory)Thunderstore</ThunderstoreDir>
+  </PropertyGroup>
+</Project>

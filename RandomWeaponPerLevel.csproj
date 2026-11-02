@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RandomWeaponPerLevel</RootNamespace>
-    <AssemblyName>RandomWeaponPerLevel</AssemblyName>
+    <AssemblyName>Arms Race</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -33,25 +33,25 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\AppData\Roaming\com.kesomannen.gale\sulfur\profiles\Default\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>$(SulfurBepInExCoreDir)\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\AppData\Roaming\com.kesomannen.gale\sulfur\profiles\Default\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(SulfurBepInExCoreDir)\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="PerfectRandom.Sulfur.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.Core.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\PerfectRandom.Sulfur.Core.dll</HintPath>
     </Reference>
     <Reference Include="PerfectRandom.Sulfur.Gameplay, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.Gameplay.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\PerfectRandom.Sulfur.Gameplay.dll</HintPath>
     </Reference>
     <Reference Include="PerfectRandom.Sulfur.LevelGeneration, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\PerfectRandom.Sulfur.LevelGeneration.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\PerfectRandom.Sulfur.LevelGeneration.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,16 +63,16 @@
     <Reference Include="System.Xml" />
     <Reference Include="Unity.InputSystem, Version=1.18.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\Unity.InputSystem.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:\SteamLibrary\steamapps\common\SULFUR\Sulfur_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(SulfurManagedDir)\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -80,4 +80,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="DeployToGaleProfile" AfterTargets="Build" Condition="'$(DeployToSulfurProfile)' == 'true'">
+    <ItemGroup>
+      <LangFiles Include="$(ThunderstoreDir)\lang\*.json" />
+    </ItemGroup>
+    <MakeDir Directories="$(SulfurBepInExPluginsDir)\Arms Race" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SulfurBepInExPluginsDir)\Arms Race" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ThunderstoreDir)" />
+    <Copy SourceFiles="@(LangFiles)" DestinationFolder="$(SulfurBepInExPluginsDir)\Arms Race\lang" Condition="'@(LangFiles)' != ''" />
+  </Target>
 </Project>
