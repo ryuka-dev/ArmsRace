@@ -35,9 +35,11 @@ namespace RandomWeaponPerLevel
         public string weaponName;
     }
 
-    [BepInPlugin("kumo.sulfur.random_weapon_per_level", "Random Weapon Per Level", "0.4.1")]
+    [BepInPlugin("kumo.sulfur.random_weapon_per_level", "Random Weapon Per Level", PluginVersion)]
     public sealed class Plugin : BaseUnityPlugin
     {
+        public const string PluginVersion = "1.0.3";
+
         internal static ManualLogSource Log;
         internal static Plugin Instance;
 
@@ -459,7 +461,7 @@ namespace RandomWeaponPerLevel
             generationCounter = 0;
 
             Logger.LogInfo(
-                "Random Weapon Per Level 0.4.2 loaded. " +
+                "Random Weapon Per Level " + PluginVersion + " loaded. " +
                 "EnableMod=" + enableMod.Value +
                 ", RandomizeOnLevelStart=" + randomizeOnLevelStart.Value +
                 ", DebugKeyEnabled=" + debugKeyEnabled.Value +

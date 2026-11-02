@@ -74,7 +74,7 @@ This is intentional. Generated weapons are not meant to be stored permanently.
 After launching the game once with the mod installed, a config file will be created:
 
 ```text
-BepInEx/config/kumo.sulfur.arms_race.cfg
+BepInEx/config/kumo.sulfur.random_weapon_per_level.cfg
 ```
 
 Main options include:
@@ -152,10 +152,10 @@ Make sure BepInEx is installed.
 
 1. Install BepInEx for SULFUR.
 2. Start the game once so BepInEx creates its folders.
-3. Place the mod DLL into:
+3. Create a folder for the mod and place `Arms Race.dll` and the `lang` folder inside it:
 
 ```text
-BepInEx/plugins/
+BepInEx/plugins/ArmsRace/
 ```
 
 4. Start the game.
@@ -184,7 +184,7 @@ This mod does not edit original game files.
 
 ## Uninstallation
 
-Remove the mod DLL from:
+Remove the mod folder (`Arms Race.dll` and its `lang` folder) from:
 
 ```text
 BepInEx/plugins/
@@ -193,7 +193,7 @@ BepInEx/plugins/
 Optionally remove the config file:
 
 ```text
-BepInEx/config/kumo.sulfur.arms_race.cfg
+BepInEx/config/kumo.sulfur.random_weapon_per_level.cfg
 ```
 
 The mod does not require custom save data to function. Removing the mod should not prevent the game from loading.
@@ -207,22 +207,7 @@ The repository only contains my original mod source code and packaging text. It 
 
 If you are another modder, feel free to study how the mod works or use it as a reference for your own implementation.
 
-[ryuka-sulfur-mods](https://github.com/ryuka-dev/ryuka-sulfur-mods)
-
-## Changelog
-
-### 1.0.0
-
-* Initial release.
-* Adds random weapon generation on level start.
-* Adds random weapon reward on enemy kill.
-* Adds configurable kill reward cooldown.
-* Adds random oils, scrolls, compatible attachments, rank adjustment, and durability safety.
-* Adds runtime cleanup for generated weapons.
-* Adds level transition cleanup.
-* Adds Amulet teleport cleanup.
-* Adds drop prevention for generated weapons.
-* Debug key spawning is available but disabled by default.
+[ryuka-dev/ArmsRace](https://github.com/ryuka-dev/ArmsRace)
 
 ## SULFUR Config Localization Support
 

@@ -74,7 +74,7 @@ This is intentional. Generated weapons are not meant to be stored permanently.
 
 After launching the game once with the mod installed, a config file will be created:
 
-[code]BepInEx/config/kumo.sulfur.arms_race.cfg[/code]
+[code]BepInEx/config/kumo.sulfur.random_weapon_per_level.cfg[/code]
 Main options include:
 
 [code][General]
@@ -146,9 +146,9 @@ Make sure BepInEx is installed.
 [list=1]
 [*]Install BepInEx for SULFUR.[/*]
 [*]Start the game once so BepInEx creates its folders.[/*]
-[*]Place the mod DLL into:[/*]
+[*]Create a folder for the mod and place [color=#ffff00]Arms Race.dll[/color] and the [color=#ffff00]lang[/color] folder inside it:[/*]
 [/list]
-[code]BepInEx/plugins/[/code]
+[code]BepInEx/plugins/ArmsRace/[/code]
 4. Start the game.
 
 [color=RoyalBlue][b]Compatibility[/b][/color]
@@ -177,12 +177,12 @@ This mod does not edit original game files.
 [/list]
 [color=RoyalBlue][b]Uninstallation[/b][/color]
 
-Remove the mod DLL from:
+Remove the mod folder ([color=#ffff00]Arms Race.dll[/color] and its [color=#ffff00]lang[/color] folder) from:
 
 [code]BepInEx/plugins/[/code]
 Optionally remove the config file:
 
-[code]BepInEx/config/kumo.sulfur.arms_race.cfg[/code]
+[code]BepInEx/config/kumo.sulfur.random_weapon_per_level.cfg[/code]
 The mod does not require custom save data to function. Removing the mod should not prevent the game from loading.
 
 [color=RoyalBlue][b]Source Code[/b][/color]
@@ -194,24 +194,8 @@ The repository only contains my original mod source code and packaging text. It 
 
 If you are another modder, feel free to study how the mod works or use it as a reference for your own implementation.
 
-[url=https://github.com/ryuka-dev/ryuka-sulfur-mods]ryuka-sulfur-mods[/url]
+[url=https://github.com/ryuka-dev/ArmsRace]ryuka-dev/ArmsRace[/url]
 
-[color=RoyalBlue][b]Changelog[/b][/color]
-
-[color=DodgerBlue][b]1.0.0[/b][/color]
-
-[list]
-[*]Initial release.[/*]
-[*]Adds random weapon generation on level start.[/*]
-[*]Adds random weapon reward on enemy kill.[/*]
-[*]Adds configurable kill reward cooldown.[/*]
-[*]Adds random oils, scrolls, compatible attachments, rank adjustment, and durability safety.[/*]
-[*]Adds runtime cleanup for generated weapons.[/*]
-[*]Adds level transition cleanup.[/*]
-[*]Adds Amulet teleport cleanup.[/*]
-[*]Adds drop prevention for generated weapons.[/*]
-[*]Debug key spawning is available but disabled by default.[/*]
-[/list]
 [color=RoyalBlue][b]SULFUR Config Localization Support[/b][/color]
 
 This mod includes localization files for SULFUR Config.
@@ -240,6 +224,14 @@ Supported SULFUR Config languages:
 [/list]
 [font=Arial Black][color=DarkOrange][size=5][b]Changelog[/b][/size][/color][/font]
 
+[color=RoyalBlue][b]1.0.3[/b][/color]
+
+[list]
+[*]Works again on SULFUR 1.0 (tested on 1.0.2). The previous build was compiled against an older game version and hit errors on newer ones: since game version 0.19 when it had to move a weapon you already had equipped into your backpack, and on 1.0.2 when selecting the new weapon. No gameplay changes.[/*]
+[*]The SULFUR Config translations now ship in a [color=#ffff00]lang[/color] folder next to the DLL.[/*]
+[*]Updating by hand: the plugin file is still [color=#ffff00]Arms Race.dll[/color], so replace the old one instead of keeping two copies, put the [color=#ffff00]lang[/color] folder next to it, and delete the old loose [color=#ffff00].json[/color] translation files.[/*]
+[*]Corrected the config file name in the description: it is [color=#ffff00]kumo.sulfur.random_weapon_per_level.cfg[/color].[/*]
+[/list]
 [color=RoyalBlue][b]1.0.2[/b][/color]
 
 [list]
