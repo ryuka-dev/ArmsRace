@@ -1,0 +1,41 @@
+{
+  // Re-run after every game patch. A DLL built against an older game build can fail to bind
+  // to methods the game has since given extra optional parameters (MissingMethodException when
+  // the calling method is first compiled), so this drives the two call paths that broke that way:
+  // ItemGrid.GetPossibleSpace (moving the player's own weapon to the backpack) and
+  // EquipmentManager.ChangeWeapon (force-selecting the generated weapon).
+  "name": "armsrace-compat-smoke",
+  "mod": "kumo.sulfur.random_weapon_per_level",
+  "description": "Fixture: slot 3 stands in the hub with a Catacoil (3x2) in both weapon slots and a backpack with no room for it, so entering Sewers (setup) correctly declines with 'Could not give random weapon'. Dropping the Cactus at [3,3] frees a 2x3 area; the next level start must then move the Weapon0 Catacoil into the backpack through the rotated GetPossibleSpace branch, spawn the generated weapon and force-select it (ChangeWeapon). One kill exercises the kill reward, two more level completions exercise the transition cleanup and level-start grant again. Not covered here: moving the player's weapon on every level (needs the random generated weapon dropped by name first; done by hand in round RandomWeaponPerLevel/1) and the Amulet teleport cleanup.",
+  "setup": { "slot": 3, "resetSlot": true, "chapter": "Act_01_Sewers", "seed": 12345, "godMode": true, "instances": ["host"] },
+  "steps": [
+    { "label": "free a 2x3 backpack area", "do": "call", "instance": "host", "method": "equipment",
+      "args": { "action": "drop", "item": "Item_Cactus", "grid": [3, 3] } },
+    { "label": "next level: move own weapon to backpack, grant and select", "do": "call", "instance": "host", "method": "level",
+      "args": { "action": "complete", "count": 1 } },
+    { "do": "wait", "seconds": 4 },
+    { "do": "screenshot", "instance": "host" },
+    { "label": "kill reward", "do": "kill_enemies", "instance": "host", "count": 1 },
+    { "do": "wait", "seconds": 2 },
+    { "label": "two more level starts", "do": "call", "instance": "host", "method": "level",
+      "args": { "action": "complete", "count": 2 } },
+    { "do": "wait", "seconds": 4 },
+    { "do": "screenshot", "instance": "host" }
+  ],
+  "assertions": [
+    { "name": "plugin loaded", "instance": "host", "scope": "startup", "pattern": "\\[Info\\s*:Random Weapon Per Level\\] Random Weapon Per Level .* loaded\\.", "op": ">=", "value": 1 },
+    { "name": "drop patch applied", "instance": "host", "scope": "startup", "pattern": "Patched InventoryItem\\.DropFromPlayer\\.", "op": "==", "value": 1 },
+    { "name": "kill reward patch applied", "instance": "host", "scope": "startup", "pattern": "Patched Unit\\.Die for random weapon on kill", "op": ">=", "value": 1 },
+    { "name": "transition cleanup patched", "instance": "host", "scope": "startup", "pattern": "Level transition cleanup patched methods: [1-9]", "op": "==", "value": 1 },
+    { "name": "next-level trigger patched", "instance": "host", "scope": "startup", "pattern": "Patched NextLevelTrigger\\.MakeTransition\\.", "op": "==", "value": 1 },
+    { "name": "amulet patch applied", "instance": "host", "scope": "startup", "pattern": "Patched AmuletHelper\\.DoneChanneling\\.", "op": "==", "value": 1 },
+    { "name": "no lookup or patch failure", "instance": "host", "scope": "startup", "pattern": "Random Weapon Per Level\\] (Could not (find|patch)|Failed to patch|No Unit\\.Die method)", "op": "==", "value": 0 },
+    { "name": "own weapon moved, not skipped", "instance": "host", "scope": "steps", "pattern": "Cannot move existing weapon to backpack", "op": "==", "value": 0 },
+    { "name": "level-start grants", "instance": "host", "scope": "steps", "pattern": "Generated random weapon by level signature .* \\(created item found", "op": ">=", "value": 3 },
+    { "name": "kill reward grant", "instance": "host", "scope": "steps", "pattern": "Generated random weapon by enemy kill reward .* \\(created item found", "op": ">=", "value": 1 },
+    { "name": "no grant refused", "instance": "host", "scope": "steps", "pattern": "Could not give random weapon", "op": "==", "value": 0 },
+    { "name": "no select failure", "instance": "host", "scope": "steps", "pattern": "Failed to select generated weapon slot", "op": "==", "value": 0 },
+    { "name": "no binding failure", "instance": "host", "scope": "startup", "pattern": "MissingMethodException|MissingFieldException|TypeLoadException", "op": "==", "value": 0 },
+    { "name": "no mod warnings in steps", "instance": "host", "scope": "steps", "pattern": "\\[(Warning|Error)\\s*:Random Weapon Per Level\\]", "op": "==", "value": 0 }
+  ]
+}
