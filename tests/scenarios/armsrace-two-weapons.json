@@ -1,0 +1,43 @@
+{
+  // Fixture: slot 3, Catacoil in both weapon slots and a full backpack (see armsrace-compat-smoke.json).
+  "name": "armsrace-two-weapons",
+  "mod": "kumo.sulfur.random_weapon_per_level",
+  "description": "GeneratedWeaponCount=2 with rechambering always on. With room for one gun, the level start fills one slot and leaves the other owned gun alone. With room for both, it fills both and the held gun is the preferred slot's. Two kills then replace the older weapon each, in turn. Not covered: death cleanup and the vendor block, which need a player death and a shop screen.",
+  "setup": { "slot": 3, "resetSlot": true, "chapter": "Act_01_Sewers", "seed": 12345, "godMode": true, "instances": ["host"] },
+  "steps": [
+    { "do": "call", "instance": "host", "method": "config_set",
+      "args": { "guid": "kumo.sulfur.random_weapon_per_level", "section": "General", "key": "GeneratedWeaponCount", "value": "2" } },
+    { "do": "call", "instance": "host", "method": "config_set",
+      "args": { "guid": "kumo.sulfur.random_weapon_per_level", "section": "Random Upgrades", "key": "EnableRandomRechamber", "value": "true" } },
+    { "do": "call", "instance": "host", "method": "config_set",
+      "args": { "guid": "kumo.sulfur.random_weapon_per_level", "section": "Random Upgrades", "key": "RechamberChance", "value": "1" } },
+    { "label": "room for one gun", "do": "call", "instance": "host", "method": "equipment",
+      "args": { "action": "drop", "item": "Item_Cactus", "grid": [3, 3] } },
+    { "label": "level start: only one slot can be filled", "do": "call", "instance": "host", "method": "level",
+      "args": { "action": "complete", "count": 1 } },
+    { "do": "wait_for", "instance": "host", "log": { "pattern": "Gave fewer generated weapons" }, "timeoutSeconds": 15 },
+    { "label": "room for the second gun", "do": "call", "instance": "host", "method": "equipment",
+      "args": { "action": "drop", "item": "Weapon_Catacoil", "grid": [3, 2] } },
+    { "label": "level start: both slots", "do": "call", "instance": "host", "method": "level",
+      "args": { "action": "goto", "chapter": "Act_01_Sewers", "level": 2, "seed": 12345 } },
+    { "do": "wait", "seconds": 4 },
+    { "do": "inspect", "instance": "host", "root": "GameManager", "path": "Instance.EquipmentManager.SelectedInventorySlot", "op": "==", "value": "Weapon0" },
+    { "do": "screenshot", "instance": "host" },
+    { "label": "first kill replaces Weapon0", "do": "kill_enemies", "instance": "host", "count": 1 },
+    { "do": "wait", "seconds": 2 },
+    { "label": "second kill replaces Weapon1", "do": "kill_enemies", "instance": "host", "count": 1 },
+    { "do": "wait", "seconds": 2 },
+    { "do": "inspect", "instance": "host", "root": "GameManager", "path": "Instance.EquipmentManager.SelectedInventorySlot", "op": "==", "value": "Weapon1" },
+    { "do": "screenshot", "instance": "host" }
+  ],
+  "assertions": [
+    { "name": "two-slot level start", "instance": "host", "scope": "steps", "pattern": "Generated random weapon by level signature .* into Weapon1", "op": "==", "value": 1 },
+    { "name": "partial level start logged", "instance": "host", "scope": "steps", "pattern": "Gave fewer generated weapons", "op": "==", "value": 1 },
+    { "name": "first kill rotates Weapon0", "instance": "host", "scope": "steps", "pattern": "Generated random weapon by enemy kill reward into Weapon0", "op": "==", "value": 1 },
+    { "name": "second kill rotates Weapon1", "instance": "host", "scope": "steps", "pattern": "Generated random weapon by enemy kill reward into Weapon1", "op": "==", "value": 1 },
+    { "name": "rechamber ran", "instance": "host", "scope": "steps", "pattern": "Rechambered generated weapon", "op": ">=", "value": 1 },
+    { "name": "no mod warnings in steps", "instance": "host", "scope": "steps", "pattern": "\\[(Warning|Error)\\s*:Random Weapon Per Level\\]", "op": "==", "value": 0 },
+    { "name": "no binding failure", "instance": "host", "scope": "startup", "pattern": "MissingMethodException|MissingFieldException|TypeLoadException", "op": "==", "value": 0 },
+    { "name": "death and sell patches applied", "instance": "host", "scope": "startup", "pattern": "Patched (GameManager\\.HandleDeathConsequences|InventoryItem\\.(UseSell|DropSell))\\.", "op": "==", "value": 3 }
+  ]
+}

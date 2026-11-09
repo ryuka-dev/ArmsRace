@@ -6,7 +6,7 @@
     },
     {
       "key": "plugin.description",
-      "value": "Generates random weapons, upgrades, and rewards during a run."
+      "value": "Oynanış sırasında rastgele silahlar, yükseltmeler ve ödüller üretir."
     },
     {
       "key": "section.General",
@@ -38,323 +38,347 @@
     },
     {
       "key": "entry.General.EnableMod.name",
-      "value": "Enable Mod"
+      "value": "Modu etkinleştir"
     },
     {
       "key": "entry.General.EnableMod.description",
-      "value": "Enable this mod."
+      "value": "Bu modu etkinleştirir."
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.name",
-      "value": "Randomize On Level Start"
+      "value": "Bölüm başında silah ver"
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.description",
-      "value": "Give one random weapon when entering a non-safe-zone level."
+      "value": "Güvenli bölge olmayan bir bölüme girince rastgele silahlar verir."
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.name",
-      "value": "Enable Random Weapon On Kill"
+      "value": "Öldürünce rastgele silah ver"
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.description",
-      "value": "If true, killing an eligible enemy grants one generated random weapon."
+      "value": "Açıkken uygun bir düşmanı öldürmek, rastgele üretilmiş bir silah kazandırır."
     },
     {
       "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.name",
-      "value": "Random Weapon On Kill Cooldown"
+      "value": "Öldürme ödülü bekleme süresi"
     },
     {
       "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.description",
-      "value": "Cooldown in seconds for random weapon rewards from enemy kills."
+      "value": "Düşman öldürerek kazanılan rastgele silah ödülünün saniye cinsinden bekleme süresi."
     },
     {
       "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.name",
-      "value": "Kill Reward Requires Playable Level"
+      "value": "Yalnızca oynanabilir bölümlerde ödül"
     },
     {
       "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.description",
-      "value": "If true, kill rewards only trigger in playable non-safe-zone levels."
+      "value": "Açıkken öldürme ödülleri yalnızca güvenli bölge olmayan oynanabilir bölümlerde verilir."
     },
     {
       "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.name",
-      "value": "Kill Reward Require Experience On Kill"
+      "value": "Yalnızca XP veren hedeflerde ödül"
     },
     {
       "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.description",
-      "value": "If true, only units with ExperienceOnKill > 0 can trigger a random weapon reward. This avoids most props and non-enemy objects."
+      "value": "Açıkken yalnızca öldürüldüğünde XP veren hedefler rastgele silah ödülü verir. Böylece çoğu dekor ve düşman olmayan nesne hariç tutulur."
     },
     {
       "key": "entry.Kill Reward.LogKillRewardChecks.name",
-      "value": "Log Kill Reward Checks"
+      "value": "Öldürme ödülü kontrollerini kaydet"
     },
     {
       "key": "entry.Kill Reward.LogKillRewardChecks.description",
-      "value": "Log detailed kill reward checks. Keep false for normal gameplay."
+      "value": "Öldürme ödülü kontrollerini ayrıntılı olarak günlüğe kaydeder. Normal oyunda kapalı tutun."
     },
     {
       "key": "entry.General.AnnouncePickup.name",
-      "value": "Announce Pickup"
+      "value": "Alma bildirimi"
     },
     {
       "key": "entry.General.AnnouncePickup.description",
-      "value": "Show pickup notification when a random weapon is generated."
+      "value": "Rastgele silah üretildiğinde alma bildirimi gösterir."
     },
     {
       "key": "entry.General.PreferredWeaponSlot.name",
-      "value": "Preferred Weapon Slot"
+      "value": "Tercih edilen silah yuvası"
     },
     {
       "key": "entry.General.PreferredWeaponSlot.description",
-      "value": "Which weapon slot should receive the generated weapon."
+      "value": "Üretilen silahın hangi silah yuvasına konulacağını belirler."
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.name",
+      "value": "Üretilen silah sayısı"
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.description",
+      "value": "Aynı anda taşıdığınız üretilen silah sayısı. 2 olduğunda bir bölüme girince iki silah yuvası da dolar ve her öldürme daha eski üretilen silahın yerini alır. Kuşandığınız silahlar sırt çantanıza geçer."
     },
     {
       "key": "entry.General.ForceSelectGeneratedWeapon.name",
-      "value": "Force Select Generated Weapon"
+      "value": "Üretilen silaha otomatik geç"
     },
     {
       "key": "entry.General.ForceSelectGeneratedWeapon.description",
-      "value": "Force-select the generated weapon after it is equipped."
+      "value": "Üretilen silah kuşanıldıktan sonra otomatik olarak ona geçer."
     },
     {
       "key": "entry.General.CleanupOldGeneratedWeapons.name",
-      "value": "Cleanup Old Generated Weapons"
+      "value": "Eski üretilen silahları temizle"
     },
     {
       "key": "entry.General.CleanupOldGeneratedWeapons.description",
-      "value": "Remove older runtime-tagged weapons generated by this mod before generating a new one."
+      "value": "Yenisini üretmeden önce bu modun daha önce ürettiği silahları kaldırır."
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.name",
-      "value": "Cleanup Generated Weapons Before Level Transition"
+      "value": "Bölüm geçişinden önce temizle"
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.description",
-      "value": "Remove runtime-tagged generated weapons before GameManager.SwitchLevel runs. This prevents generated weapons from entering cross-level equipment data."
+      "value": "Bölüm geçişlerinden ve ölüm işlemlerinden önce üretilen silahları kaldırır, böylece kayıt dosyanıza asla geçmezler."
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.name",
-      "value": "Destroy Generated Weapons On Drop"
+      "value": "Bırakılan üretilen silahları yok et"
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.description",
-      "value": "Destroy runtime-tagged generated weapons when the player tries to drop them. This prevents tag loss through ground pickup data."
+      "value": "Oyuncu üretilen bir silahı bırakmaya çalıştığında silahı yok eder. Yerden tekrar alındığında silahın üretilmiş olduğu bilgisinin kaybolmasını önler."
     },
     {
       "key": "entry.Timing.AutoGiveDelayAfterLevelStart.name",
-      "value": "Auto Give Delay After Level Start"
+      "value": "Bölüm başında verme gecikmesi"
     },
     {
       "key": "entry.Timing.AutoGiveDelayAfterLevelStart.description",
-      "value": "Delay before giving the level-start random weapon after entering a playable level."
+      "value": "Oynanabilir bir bölüme girdikten sonra silah verilene kadar beklenecek süre."
     },
     {
       "key": "entry.Timing.PostCreateWaitFrames.name",
-      "value": "Post Create Wait Frames"
+      "value": "Üretim sonrası bekleme karesi"
     },
     {
       "key": "entry.Timing.PostCreateWaitFrames.description",
-      "value": "Frames to wait after SpawnItemInSlot before searching for the created InventoryItem."
+      "value": "Silah üretildikten sonra rastgele yükseltmeler uygulanmadan önce beklenecek kare sayısı."
     },
     {
       "key": "entry.Timing.SceneSignatureCheckInterval.name",
-      "value": "Scene Signature Check Interval"
+      "value": "Bölüm kontrol aralığı"
     },
     {
       "key": "entry.Timing.SceneSignatureCheckInterval.description",
-      "value": "How often the mod checks the current level signature."
+      "value": "Yeni bir bölüme girilip girilmediğinin ne sıklıkla kontrol edileceği."
     },
     {
       "key": "entry.Debug.DebugKeyEnabled.name",
-      "value": "Debug Key Enabled"
+      "value": "Hata ayıklama tuşunu etkinleştir"
     },
     {
       "key": "entry.Debug.DebugKeyEnabled.description",
-      "value": "Enable debug key spawning."
+      "value": "Hata ayıklama tuşuyla silah üretilmesine izin verir."
     },
     {
       "key": "entry.Debug.DebugKey.name",
-      "value": "Debug Key"
+      "value": "Hata ayıklama tuşu"
     },
     {
       "key": "entry.Debug.DebugKey.description",
-      "value": "Press this key to generate one random debug weapon. This can be used repeatedly."
+      "value": "Bu tuşa basınca rastgele bir silah üretilir. Tekrar tekrar kullanılabilir."
     },
     {
       "key": "entry.Debug.LogActions.name",
-      "value": "Log Actions"
+      "value": "Üretim bilgilerini kaydet"
     },
     {
       "key": "entry.Debug.LogActions.description",
-      "value": "Log generated weapon information."
+      "value": "Üretilen silahların bilgilerini günlüğe kaydeder."
     },
     {
       "key": "entry.Debug.LogWeaponPool.name",
-      "value": "Log Weapon Pool"
+      "value": "Silah havuzunu kaydet"
     },
     {
       "key": "entry.Debug.LogWeaponPool.description",
-      "value": "Log every weapon in the random pool. Keep false unless debugging."
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.name",
-      "value": "Guns Only"
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.description",
-      "value": "Exclude melee and throwable weapons."
+      "value": "Rastgele havuzdaki tüm silahları günlüğe kaydeder. Hata ayıklamıyorsanız kapalı tutun."
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.name",
-      "value": "Exclude Starts Empty"
+      "value": "Boş başlayan silahları hariç tut"
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.description",
-      "value": "Exclude weapons marked as startsEmpty."
+      "value": "Başlangıçta mermisi olmayan silahları hariç tutar."
     },
     {
       "key": "entry.Random Pool.RequireWeaponPrefab.name",
-      "value": "Require Weapon Prefab"
+      "value": "Yalnızca modeli olan silahlar"
     },
     {
       "key": "entry.Random Pool.RequireWeaponPrefab.description",
-      "value": "Only include weapons with a prefab. Recommended."
+      "value": "Yalnızca oyun içi modeli olan silahları dahil eder. Açık tutmanız önerilir."
     },
     {
       "key": "entry.Random Pool.RequireAmmoMagazine.name",
-      "value": "Require Ammo Magazine"
+      "value": "Yalnızca şarjörlü silahlar"
     },
     {
       "key": "entry.Random Pool.RequireAmmoMagazine.description",
-      "value": "Only include weapons with iAmmoMax > 0."
+      "value": "Yalnızca şarjör kapasitesi 0'dan büyük silahları dahil eder."
     },
     {
       "key": "entry.Random Pool.RequireUsableByPlayer.name",
-      "value": "Require Usable By Player"
+      "value": "Yalnızca oyuncu silahları"
     },
     {
       "key": "entry.Random Pool.RequireUsableByPlayer.description",
-      "value": "Only include WeaponSO.usableByPlayer weapons."
+      "value": "Yalnızca oyuncunun kullanabildiği silahları dahil eder."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomOils.name",
-      "value": "Enable Random Oils"
+      "value": "Rastgele yağları etkinleştir"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomOils.description",
-      "value": "Add random oil enchantments to generated weapons."
+      "value": "Üretilen silahlara rastgele yağlar ekler."
     },
     {
       "key": "entry.Random Upgrades.MinOilCount.name",
-      "value": "Min Oil Count"
+      "value": "En az yağ sayısı"
     },
     {
       "key": "entry.Random Upgrades.MinOilCount.description",
-      "value": "Minimum random oil enchantments added to generated weapons."
+      "value": "Üretilen silahlara eklenecek en az yağ sayısı."
     },
     {
       "key": "entry.Random Upgrades.MaxOilCount.name",
-      "value": "Max Oil Count"
+      "value": "En fazla yağ sayısı"
     },
     {
       "key": "entry.Random Upgrades.MaxOilCount.description",
-      "value": "Maximum random oil enchantments added to generated weapons."
+      "value": "Üretilen silahlara eklenecek en fazla yağ sayısı."
     },
     {
       "key": "entry.Random Upgrades.RespectEnchantmentSlots.name",
-      "value": "Respect Enchantment Slots"
+      "value": "Büyü yuvası sınırına uy"
     },
     {
       "key": "entry.Random Upgrades.RespectEnchantmentSlots.description",
-      "value": "If true, only add oils/scrolls when the weapon has free enchantment slots. If false, this mod can create chaos guns regardless of rank."
+      "value": "Açıkken yağ ve parşömenler yalnızca silahta boş büyü yuvası varsa eklenir. Kapalıyken bu mod, rütbeden bağımsız olarak kaos silahları üretebilir."
     },
     {
       "key": "entry.Random Upgrades.GrantRankForAppliedOils.name",
-      "value": "Grant Rank For Applied Oils"
+      "value": "Yağ sayısına göre rütbe ver"
     },
     {
       "key": "entry.Random Upgrades.GrantRankForAppliedOils.description",
-      "value": "If true, generated weapons gain enough XP to match the total applied enchantment count."
+      "value": "Açıkken üretilen silahlar, uygulanan toplam büyü sayısına denk gelen rütbeye ulaşacak kadar XP kazanır."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomScrolls.name",
-      "value": "Enable Random Scrolls"
+      "value": "Rastgele parşömenleri etkinleştir"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomScrolls.description",
-      "value": "Add random scroll enchantments to generated weapons."
+      "value": "Üretilen silahlara rastgele parşömenler ekler."
     },
     {
       "key": "entry.Random Upgrades.ScrollChance.name",
-      "value": "Scroll Chance"
+      "value": "Parşömen şansı"
     },
     {
       "key": "entry.Random Upgrades.ScrollChance.description",
-      "value": "Chance for a generated weapon to receive scroll enchantments. 0 = never, 1 = always."
+      "value": "Üretilen bir silahın parşömen alma şansı. 0 = asla, 1 = her zaman."
     },
     {
       "key": "entry.Random Upgrades.MinScrollCount.name",
-      "value": "Min Scroll Count"
+      "value": "En az parşömen sayısı"
     },
     {
       "key": "entry.Random Upgrades.MinScrollCount.description",
-      "value": "Minimum scroll enchantments if scroll generation succeeds."
+      "value": "Parşömen eklendiğinde en az kaç tane ekleneceği."
     },
     {
       "key": "entry.Random Upgrades.MaxScrollCount.name",
-      "value": "Max Scroll Count"
+      "value": "En fazla parşömen sayısı"
     },
     {
       "key": "entry.Random Upgrades.MaxScrollCount.description",
-      "value": "Maximum scroll enchantments if scroll generation succeeds."
+      "value": "Parşömen eklendiğinde en fazla kaç tane ekleneceği."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomAttachments.name",
-      "value": "Enable Random Attachments"
+      "value": "Rastgele aksesuarları etkinleştir"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomAttachments.description",
-      "value": "Add random compatible attachments to generated weapons."
+      "value": "Üretilen silahlara uyumlu rastgele aksesuarlar ekler."
     },
     {
       "key": "entry.Random Upgrades.AttachmentChance.name",
-      "value": "Attachment Chance"
+      "value": "Aksesuar şansı"
     },
     {
       "key": "entry.Random Upgrades.AttachmentChance.description",
-      "value": "Chance for a generated weapon to receive attachments. 0 = never, 1 = always."
+      "value": "Üretilen bir silahın aksesuar alma şansı. 0 = asla, 1 = her zaman."
     },
     {
       "key": "entry.Random Upgrades.MinAttachmentCount.name",
-      "value": "Min Attachment Count"
+      "value": "En az aksesuar sayısı"
     },
     {
       "key": "entry.Random Upgrades.MinAttachmentCount.description",
-      "value": "Minimum attachments if attachment generation succeeds."
+      "value": "Aksesuar eklendiğinde en az kaç tane ekleneceği."
     },
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.name",
-      "value": "Max Attachment Count"
+      "value": "En fazla aksesuar sayısı"
     },
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.description",
-      "value": "Maximum attachments if attachment generation succeeds."
+      "value": "Aksesuar eklendiğinde en fazla kaç tane ekleneceği."
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.name",
+      "value": "Rastgele kalibre değişimini etkinleştir"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.description",
+      "value": "Üretilen silahlar farklı bir kalibre alabilir."
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.name",
+      "value": "Kalibre değişimi şansı"
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.description",
+      "value": "Üretilen bir silahın kalibresinin değişme şansı. 0 = asla, 1 = her zaman."
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.name",
+      "value": "Kalibre değişiminde azami hasar oranı"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.description",
+      "value": "Silahın atış başına hasarını bu değerden fazla katlayacak kalibreler atlanır."
     },
     {
       "key": "entry.Safety.FixLowDurability.name",
-      "value": "Fix Low Durability"
+      "value": "Düşük dayanıklılığı düzelt"
     },
     {
       "key": "entry.Safety.FixLowDurability.description",
-      "value": "Raise generated weapon durability to MinimumDurabilityNormalized if it is lower."
+      "value": "Üretilen silahın dayanıklılığı en düşük dayanıklılık değerinin altındaysa bu değere yükseltir."
     },
     {
       "key": "entry.Safety.MinimumDurabilityNormalized.name",
-      "value": "Minimum Durability Normalized"
+      "value": "En düşük dayanıklılık oranı"
     },
     {
       "key": "entry.Safety.MinimumDurabilityNormalized.description",
-      "value": "Minimum durability for generated weapons. 0.5 = at least 50%."
+      "value": "Üretilen silahların en düşük dayanıklılığı. 0.5 = en az %50."
     },
     {
       "key": "value.General.PreferredWeaponSlot.Weapon0",
@@ -370,7 +394,7 @@
     },
     {
       "key": "value.General.PreferredWeaponSlot.FirstAvailable",
-      "value": "İlk uygun"
+      "value": "Önce boş yuva"
     }
   ]
 }

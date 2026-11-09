@@ -6,7 +6,7 @@
     },
     {
       "key": "plugin.description",
-      "value": "Generates random weapons, upgrades, and rewards during a run."
+      "value": "Generuje losowe bronie, ulepszenia i nagrody podczas rozgrywki."
     },
     {
       "key": "section.General",
@@ -22,7 +22,7 @@
     },
     {
       "key": "section.Timing",
-      "value": "Czas"
+      "value": "Opóźnienia"
     },
     {
       "key": "section.Debug",
@@ -30,7 +30,7 @@
     },
     {
       "key": "section.Random Pool",
-      "value": "Pula losowa"
+      "value": "Losowa pula"
     },
     {
       "key": "section.Random Upgrades",
@@ -38,323 +38,347 @@
     },
     {
       "key": "entry.General.EnableMod.name",
-      "value": "Enable Mod"
+      "value": "Włącz moda"
     },
     {
       "key": "entry.General.EnableMod.description",
-      "value": "Enable this mod."
+      "value": "Włącza tego moda."
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.name",
-      "value": "Randomize On Level Start"
+      "value": "Broń przy wejściu na poziom"
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.description",
-      "value": "Give one random weapon when entering a non-safe-zone level."
+      "value": "Daje losową broń po wejściu na poziom poza strefą bezpieczną."
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.name",
-      "value": "Enable Random Weapon On Kill"
+      "value": "Losowa broń za zabójstwo"
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.description",
-      "value": "If true, killing an eligible enemy grants one generated random weapon."
+      "value": "Gdy włączone, zabicie odpowiedniego wroga daje jedną losowo wygenerowaną broń."
     },
     {
       "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.name",
-      "value": "Random Weapon On Kill Cooldown"
+      "value": "Czas odnowienia nagrody za zabójstwo"
     },
     {
       "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.description",
-      "value": "Cooldown in seconds for random weapon rewards from enemy kills."
+      "value": "Czas odnowienia (w sekundach) nagród w postaci broni za zabójstwa."
     },
     {
       "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.name",
-      "value": "Kill Reward Requires Playable Level"
+      "value": "Nagroda tylko na grywalnych poziomach"
     },
     {
       "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.description",
-      "value": "If true, kill rewards only trigger in playable non-safe-zone levels."
+      "value": "Gdy włączone, nagrody za zabójstwa działają tylko na grywalnych poziomach poza strefą bezpieczną."
     },
     {
       "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.name",
-      "value": "Kill Reward Require Experience On Kill"
+      "value": "Nagroda tylko za cele z doświadczeniem"
     },
     {
       "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.description",
-      "value": "If true, only units with ExperienceOnKill > 0 can trigger a random weapon reward. This avoids most props and non-enemy objects."
+      "value": "Gdy włączone, nagrodę dają tylko cele, za których zabicie otrzymuje się doświadczenie (więcej niż 0). Pozwala to pominąć większość przedmiotów otoczenia i obiektów niebędących wrogami."
     },
     {
       "key": "entry.Kill Reward.LogKillRewardChecks.name",
-      "value": "Log Kill Reward Checks"
+      "value": "Zapisuj sprawdzanie nagród"
     },
     {
       "key": "entry.Kill Reward.LogKillRewardChecks.description",
-      "value": "Log detailed kill reward checks. Keep false for normal gameplay."
+      "value": "Zapisuje w dzienniku szczegóły sprawdzania nagród za zabójstwa. Przy normalnej grze zostaw wyłączone."
     },
     {
       "key": "entry.General.AnnouncePickup.name",
-      "value": "Announce Pickup"
+      "value": "Powiadomienie o otrzymaniu broni"
     },
     {
       "key": "entry.General.AnnouncePickup.description",
-      "value": "Show pickup notification when a random weapon is generated."
+      "value": "Pokazuje powiadomienie o podniesieniu, gdy powstaje losowa broń."
     },
     {
       "key": "entry.General.PreferredWeaponSlot.name",
-      "value": "Preferred Weapon Slot"
+      "value": "Preferowane miejsce na broń"
     },
     {
       "key": "entry.General.PreferredWeaponSlot.description",
-      "value": "Which weapon slot should receive the generated weapon."
+      "value": "Do którego miejsca na broń trafia generowana broń."
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.name",
+      "value": "Liczba generowanych broni"
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.description",
+      "value": "Ile generowanych broni nosisz jednocześnie. Przy 2 wejście na poziom wypełnia oba miejsca na broń, a każde zabójstwo zastępuje starszą generowaną broń. Założone bronie trafiają do plecaka."
     },
     {
       "key": "entry.General.ForceSelectGeneratedWeapon.name",
-      "value": "Force Select Generated Weapon"
+      "value": "Przełącz na generowaną broń"
     },
     {
       "key": "entry.General.ForceSelectGeneratedWeapon.description",
-      "value": "Force-select the generated weapon after it is equipped."
+      "value": "Automatycznie wybiera generowaną broń po jej założeniu."
     },
     {
       "key": "entry.General.CleanupOldGeneratedWeapons.name",
-      "value": "Cleanup Old Generated Weapons"
+      "value": "Usuwaj starą generowaną broń"
     },
     {
       "key": "entry.General.CleanupOldGeneratedWeapons.description",
-      "value": "Remove older runtime-tagged weapons generated by this mod before generating a new one."
+      "value": "Przed wygenerowaniem nowej broni usuwa broń wygenerowaną wcześniej przez tego moda."
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.name",
-      "value": "Cleanup Generated Weapons Before Level Transition"
+      "value": "Usuwaj generowaną broń przy zmianie poziomu"
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.description",
-      "value": "Remove runtime-tagged generated weapons before GameManager.SwitchLevel runs. This prevents generated weapons from entering cross-level equipment data."
+      "value": "Usuwa generowaną broń przed zmianą poziomu i przy śmierci, aby nigdy nie trafiła do zapisu gry."
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.name",
-      "value": "Destroy Generated Weapons On Drop"
+      "value": "Niszcz generowaną broń przy wyrzucaniu"
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.description",
-      "value": "Destroy runtime-tagged generated weapons when the player tries to drop them. This prevents tag loss through ground pickup data."
+      "value": "Niszczy generowaną broń, gdy próbujesz ją wyrzucić, aby po podniesieniu z ziemi nie utraciła oznaczenia."
     },
     {
       "key": "entry.Timing.AutoGiveDelayAfterLevelStart.name",
-      "value": "Auto Give Delay After Level Start"
+      "value": "Opóźnienie po wejściu na poziom"
     },
     {
       "key": "entry.Timing.AutoGiveDelayAfterLevelStart.description",
-      "value": "Delay before giving the level-start random weapon after entering a playable level."
+      "value": "Ile czekać po wejściu na grywalny poziom, zanim mod da losową broń."
     },
     {
       "key": "entry.Timing.PostCreateWaitFrames.name",
-      "value": "Post Create Wait Frames"
+      "value": "Klatki oczekiwania po wygenerowaniu"
     },
     {
       "key": "entry.Timing.PostCreateWaitFrames.description",
-      "value": "Frames to wait after SpawnItemInSlot before searching for the created InventoryItem."
+      "value": "Ile klatek czekać po wygenerowaniu broni przed dodaniem losowych ulepszeń."
     },
     {
       "key": "entry.Timing.SceneSignatureCheckInterval.name",
-      "value": "Scene Signature Check Interval"
+      "value": "Odstęp sprawdzania poziomu"
     },
     {
       "key": "entry.Timing.SceneSignatureCheckInterval.description",
-      "value": "How often the mod checks the current level signature."
+      "value": "Jak często mod sprawdza, czy zaczął się nowy poziom."
     },
     {
       "key": "entry.Debug.DebugKeyEnabled.name",
-      "value": "Debug Key Enabled"
+      "value": "Włącz klawisz debugowania"
     },
     {
       "key": "entry.Debug.DebugKeyEnabled.description",
-      "value": "Enable debug key spawning."
+      "value": "Pozwala generować broń klawiszem debugowania."
     },
     {
       "key": "entry.Debug.DebugKey.name",
-      "value": "Debug Key"
+      "value": "Klawisz debugowania"
     },
     {
       "key": "entry.Debug.DebugKey.description",
-      "value": "Press this key to generate one random debug weapon. This can be used repeatedly."
+      "value": "Po naciśnięciu generuje losową broń. Można używać wielokrotnie."
     },
     {
       "key": "entry.Debug.LogActions.name",
-      "value": "Log Actions"
+      "value": "Zapisuj generowaną broń"
     },
     {
       "key": "entry.Debug.LogActions.description",
-      "value": "Log generated weapon information."
+      "value": "Zapisuje w dzienniku informacje o generowanej broni."
     },
     {
       "key": "entry.Debug.LogWeaponPool.name",
-      "value": "Log Weapon Pool"
+      "value": "Zapisuj pulę broni"
     },
     {
       "key": "entry.Debug.LogWeaponPool.description",
-      "value": "Log every weapon in the random pool. Keep false unless debugging."
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.name",
-      "value": "Guns Only"
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.description",
-      "value": "Exclude melee and throwable weapons."
+      "value": "Zapisuje w dzienniku każdą broń z losowej puli. Zostaw wyłączone, chyba że debugujesz."
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.name",
-      "value": "Exclude Starts Empty"
+      "value": "Pomiń broń bez amunicji na start"
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.description",
-      "value": "Exclude weapons marked as startsEmpty."
+      "value": "Pomija broń, która na początku nie ma amunicji."
     },
     {
       "key": "entry.Random Pool.RequireWeaponPrefab.name",
-      "value": "Require Weapon Prefab"
+      "value": "Tylko broń z modelem"
     },
     {
       "key": "entry.Random Pool.RequireWeaponPrefab.description",
-      "value": "Only include weapons with a prefab. Recommended."
+      "value": "Uwzględnia tylko broń, która ma model w grze. Zalecane."
     },
     {
       "key": "entry.Random Pool.RequireAmmoMagazine.name",
-      "value": "Require Ammo Magazine"
+      "value": "Tylko broń z magazynkiem"
     },
     {
       "key": "entry.Random Pool.RequireAmmoMagazine.description",
-      "value": "Only include weapons with iAmmoMax > 0."
+      "value": "Uwzględnia tylko broń o pojemności magazynka większej niż 0."
     },
     {
       "key": "entry.Random Pool.RequireUsableByPlayer.name",
-      "value": "Require Usable By Player"
+      "value": "Tylko broń dla gracza"
     },
     {
       "key": "entry.Random Pool.RequireUsableByPlayer.description",
-      "value": "Only include WeaponSO.usableByPlayer weapons."
+      "value": "Uwzględnia tylko broń, której może używać gracz."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomOils.name",
-      "value": "Enable Random Oils"
+      "value": "Włącz losowe oleje"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomOils.description",
-      "value": "Add random oil enchantments to generated weapons."
+      "value": "Dodaje losowe oleje do generowanej broni."
     },
     {
       "key": "entry.Random Upgrades.MinOilCount.name",
-      "value": "Min Oil Count"
+      "value": "Minimum olejów"
     },
     {
       "key": "entry.Random Upgrades.MinOilCount.description",
-      "value": "Minimum random oil enchantments added to generated weapons."
+      "value": "Najmniejsza liczba losowych olejów dodawanych do generowanej broni."
     },
     {
       "key": "entry.Random Upgrades.MaxOilCount.name",
-      "value": "Max Oil Count"
+      "value": "Maksimum olejów"
     },
     {
       "key": "entry.Random Upgrades.MaxOilCount.description",
-      "value": "Maximum random oil enchantments added to generated weapons."
+      "value": "Największa liczba losowych olejów dodawanych do generowanej broni."
     },
     {
       "key": "entry.Random Upgrades.RespectEnchantmentSlots.name",
-      "value": "Respect Enchantment Slots"
+      "value": "Przestrzegaj miejsc na zaklęcia"
     },
     {
       "key": "entry.Random Upgrades.RespectEnchantmentSlots.description",
-      "value": "If true, only add oils/scrolls when the weapon has free enchantment slots. If false, this mod can create chaos guns regardless of rank."
+      "value": "Gdy włączone, oleje i zwoje są dodawane tylko wtedy, gdy broń ma wolne miejsca na zaklęcia. Gdy wyłączone, mod może tworzyć szaloną broń niezależnie od rangi."
     },
     {
       "key": "entry.Random Upgrades.GrantRankForAppliedOils.name",
-      "value": "Grant Rank For Applied Oils"
+      "value": "Podnoś rangę za oleje"
     },
     {
       "key": "entry.Random Upgrades.GrantRankForAppliedOils.description",
-      "value": "If true, generated weapons gain enough XP to match the total applied enchantment count."
+      "value": "Gdy włączone, generowana broń dostaje tyle doświadczenia, by jej ranga odpowiadała łącznej liczbie zaklęć."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomScrolls.name",
-      "value": "Enable Random Scrolls"
+      "value": "Włącz losowe zwoje"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomScrolls.description",
-      "value": "Add random scroll enchantments to generated weapons."
+      "value": "Dodaje losowe zwoje do generowanej broni."
     },
     {
       "key": "entry.Random Upgrades.ScrollChance.name",
-      "value": "Scroll Chance"
+      "value": "Szansa na zwoje"
     },
     {
       "key": "entry.Random Upgrades.ScrollChance.description",
-      "value": "Chance for a generated weapon to receive scroll enchantments. 0 = never, 1 = always."
+      "value": "Szansa, że generowana broń otrzyma zwoje. 0 = nigdy, 1 = zawsze."
     },
     {
       "key": "entry.Random Upgrades.MinScrollCount.name",
-      "value": "Min Scroll Count"
+      "value": "Minimum zwojów"
     },
     {
       "key": "entry.Random Upgrades.MinScrollCount.description",
-      "value": "Minimum scroll enchantments if scroll generation succeeds."
+      "value": "Najmniejsza liczba zwojów, jeśli broń je otrzyma."
     },
     {
       "key": "entry.Random Upgrades.MaxScrollCount.name",
-      "value": "Max Scroll Count"
+      "value": "Maksimum zwojów"
     },
     {
       "key": "entry.Random Upgrades.MaxScrollCount.description",
-      "value": "Maximum scroll enchantments if scroll generation succeeds."
+      "value": "Największa liczba zwojów, jeśli broń je otrzyma."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomAttachments.name",
-      "value": "Enable Random Attachments"
+      "value": "Włącz losowe dodatki"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomAttachments.description",
-      "value": "Add random compatible attachments to generated weapons."
+      "value": "Dodaje losowe pasujące dodatki do generowanej broni."
     },
     {
       "key": "entry.Random Upgrades.AttachmentChance.name",
-      "value": "Attachment Chance"
+      "value": "Szansa na dodatki"
     },
     {
       "key": "entry.Random Upgrades.AttachmentChance.description",
-      "value": "Chance for a generated weapon to receive attachments. 0 = never, 1 = always."
+      "value": "Szansa, że generowana broń otrzyma dodatki. 0 = nigdy, 1 = zawsze."
     },
     {
       "key": "entry.Random Upgrades.MinAttachmentCount.name",
-      "value": "Min Attachment Count"
+      "value": "Minimum dodatków"
     },
     {
       "key": "entry.Random Upgrades.MinAttachmentCount.description",
-      "value": "Minimum attachments if attachment generation succeeds."
+      "value": "Najmniejsza liczba dodatków, jeśli broń je otrzyma."
     },
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.name",
-      "value": "Max Attachment Count"
+      "value": "Maksimum dodatków"
     },
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.description",
-      "value": "Maximum attachments if attachment generation succeeds."
+      "value": "Największa liczba dodatków, jeśli broń je otrzyma."
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.name",
+      "value": "Włącz losową zmianę kalibru"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.description",
+      "value": "Generowane bronie mogą otrzymać inny kaliber."
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.name",
+      "value": "Szansa na zmianę kalibru"
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.description",
+      "value": "Szansa, że generowana broń zmieni kaliber. 0 = nigdy, 1 = zawsze."
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.name",
+      "value": "Maksymalny mnożnik obrażeń przy zmianie kalibru"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.description",
+      "value": "Kaliber jest pomijany, jeśli zwiększyłby obrażenia broni na strzał bardziej niż ta wartość."
     },
     {
       "key": "entry.Safety.FixLowDurability.name",
-      "value": "Fix Low Durability"
+      "value": "Napraw niską wytrzymałość"
     },
     {
       "key": "entry.Safety.FixLowDurability.description",
-      "value": "Raise generated weapon durability to MinimumDurabilityNormalized if it is lower."
+      "value": "Podnosi wytrzymałość generowanej broni do minimum, jeśli jest niższa."
     },
     {
       "key": "entry.Safety.MinimumDurabilityNormalized.name",
-      "value": "Minimum Durability Normalized"
+      "value": "Minimalna wytrzymałość"
     },
     {
       "key": "entry.Safety.MinimumDurabilityNormalized.description",
-      "value": "Minimum durability for generated weapons. 0.5 = at least 50%."
+      "value": "Minimalna wytrzymałość generowanej broni. 0.5 = co najmniej 50%."
     },
     {
       "key": "value.General.PreferredWeaponSlot.Weapon0",
@@ -370,7 +394,7 @@
     },
     {
       "key": "value.General.PreferredWeaponSlot.FirstAvailable",
-      "value": "Pierwszy dostępny"
+      "value": "Pierwsze wolne"
     }
   ]
 }

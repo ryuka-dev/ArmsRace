@@ -6,6 +6,7 @@ using PerfectRandom.Sulfur.Core;
 using PerfectRandom.Sulfur.Core.Items;
 using PerfectRandom.Sulfur.Core.UI;
 using PerfectRandom.Sulfur.Core.UI.Inventory;
+using PerfectRandom.Sulfur.Core.Units;
 using PerfectRandom.Sulfur.Core.Weapons;
 using System;
 using System.Collections;
@@ -38,7 +39,7 @@ namespace RandomWeaponPerLevel
     [BepInPlugin("kumo.sulfur.random_weapon_per_level", "Random Weapon Per Level", PluginVersion)]
     public sealed class Plugin : BaseUnityPlugin
     {
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.0.4";
 
         internal static ManualLogSource Log;
         internal static Plugin Instance;
@@ -55,11 +56,11 @@ namespace RandomWeaponPerLevel
         private ConfigEntry<PreferredWeaponSlotMode> preferredWeaponSlot;
         private ConfigEntry<bool> forceSelectGeneratedWeapon;
         private ConfigEntry<bool> cleanupOldGeneratedWeapons;
+        private ConfigEntry<int> generatedWeaponCount;
 
         private ConfigEntry<bool> destroyGeneratedWeaponsOnDrop;
         private ConfigEntry<bool> cleanupGeneratedWeaponsBeforeLevelTransition;
 
-        private ConfigEntry<bool> gunsOnly;
         private ConfigEntry<bool> excludeStartsEmpty;
         private ConfigEntry<bool> requireWeaponPrefab;
         private ConfigEntry<bool> requireAmmoMagazine;
@@ -90,6 +91,10 @@ namespace RandomWeaponPerLevel
         private ConfigEntry<int> minAttachmentCount;
         private ConfigEntry<int> maxAttachmentCount;
 
+        private ConfigEntry<bool> enableRandomRechamber;
+        private ConfigEntry<float> rechamberChance;
+        private ConfigEntry<float> maxRechamberDamageRatio;
+
         private ConfigEntry<float> minimumDurabilityNormalized;
         private ConfigEntry<bool> fixLowDurability;
 
@@ -105,16 +110,39 @@ namespace RandomWeaponPerLevel
 
         private bool sawLoadingOrLevelTransition;
         private bool autoGiveRoutineRunning;
+        private bool grantInProgress;
+        private bool transitionPending;
+        private float transitionPendingExpiry;
 
         private int currentLevelSignature;
         private int cachedLevelSignature;
         private float nextSignatureCheckTime;
         private int generationCounter;
 
+        // Upper bound on how long a transition blocks new grants if the game never reports loading.
+        private const float TransitionPendingTimeoutSeconds = 5f;
+
+        // Keeps shotgun pellets on very fast guns from flooding the game with projectiles.
+        private const float MaxRechamberProjectilesPerSecond = 80f;
+
+        private static readonly CaliberTypes[] RechamberCalibers =
+        {
+            CaliberTypes._9mm,
+            CaliberTypes._12ga,
+            CaliberTypes._556mm,
+            CaliberTypes._762mm,
+            CaliberTypes._50BMG
+        };
+
         internal int CleanupGeneratedWeaponsForTransition(string reason)
         {
             if (!ShouldCleanupBeforeLevelTransition())
                 return 0;
+
+            // The game keeps running for a moment after this point and saves the inventory later,
+            // so a weapon granted in that window would be saved as a normal item.
+            transitionPending = true;
+            transitionPendingExpiry = Time.unscaledTime + TransitionPendingTimeoutSeconds;
 
             // 同一帧多个 transition 方法连续触发时，只清一次。
             if (lastTransitionCleanupFrame == Time.frameCount)
@@ -157,7 +185,7 @@ namespace RandomWeaponPerLevel
                 "General",
                 "RandomizeOnLevelStart",
                 true,
-                "Give one random weapon when entering a non-safe-zone level."
+                "Give random weapons when entering a non-safe-zone level."
             );
 
             enableRandomWeaponOnKill = Config.Bind(
@@ -214,6 +242,16 @@ namespace RandomWeaponPerLevel
                 "Which weapon slot should receive the generated weapon."
             );
 
+            generatedWeaponCount = Config.Bind(
+                "General",
+                "GeneratedWeaponCount",
+                1,
+                new ConfigDescription(
+                    "How many generated weapons you carry at once. At 2, entering a level fills both weapon slots and each kill replaces the older generated weapon. Weapons you have equipped move to your backpack.",
+                    new AcceptableValueRange<int>(1, 2)
+                )
+            );
+
             forceSelectGeneratedWeapon = Config.Bind(
                 "General",
                 "ForceSelectGeneratedWeapon",
@@ -232,7 +270,7 @@ namespace RandomWeaponPerLevel
                 "Safety",
                 "CleanupGeneratedWeaponsBeforeLevelTransition",
                 true,
-                "Remove runtime-tagged generated weapons before GameManager.SwitchLevel runs. This prevents generated weapons from entering cross-level equipment data."
+                "Remove generated weapons before level transitions and death handling, so they never reach your save."
             );
 
             destroyGeneratedWeaponsOnDrop = Config.Bind(
@@ -286,8 +324,6 @@ namespace RandomWeaponPerLevel
                 false,
                 "Log every weapon in the random pool. Keep false unless debugging."
             );
-
-            gunsOnly = Config.Bind("Random Pool", "GunsOnly", true, "Exclude melee and throwable weapons.");
 
             excludeStartsEmpty = Config.Bind(
                 "Random Pool",
@@ -432,6 +468,33 @@ namespace RandomWeaponPerLevel
                 )
             );
 
+            enableRandomRechamber = Config.Bind(
+                "Random Upgrades",
+                "EnableRandomRechamber",
+                false,
+                "Let generated weapons roll a different caliber, like using a Chamber Chisel."
+            );
+
+            rechamberChance = Config.Bind(
+                "Random Upgrades",
+                "RechamberChance",
+                0.25f,
+                new ConfigDescription(
+                    "Chance for a generated weapon to be rechambered. 0 = never, 1 = always.",
+                    new AcceptableValueRange<float>(0f, 1f)
+                )
+            );
+
+            maxRechamberDamageRatio = Config.Bind(
+                "Random Upgrades",
+                "MaxRechamberDamageRatio",
+                2f,
+                new ConfigDescription(
+                    "A caliber is skipped if it would multiply the weapon's damage per shot by more than this.",
+                    new AcceptableValueRange<float>(1f, 10f)
+                )
+            );
+
             fixLowDurability = Config.Bind(
                 "Safety",
                 "FixLowDurability",
@@ -450,6 +513,7 @@ namespace RandomWeaponPerLevel
             );
 
             SceneManager.sceneLoaded += OnSceneLoaded;
+            Config.SettingChanged += OnConfigSettingChanged;
 
             harmony = new Harmony("kumo.sulfur.random_weapon_per_level");
             TryPatchHarmony();
@@ -466,13 +530,22 @@ namespace RandomWeaponPerLevel
                 ", RandomizeOnLevelStart=" + randomizeOnLevelStart.Value +
                 ", DebugKeyEnabled=" + debugKeyEnabled.Value +
                 ", DebugKey=" + debugKey.Value +
-                ", PreferredWeaponSlot=" + preferredWeaponSlot.Value
+                ", PreferredWeaponSlot=" + preferredWeaponSlot.Value +
+                ", GeneratedWeaponCount=" + generatedWeaponCount.Value +
+                ", EnableRandomRechamber=" + enableRandomRechamber.Value
             );
+        }
+
+        private void OnConfigSettingChanged(object sender, SettingChangedEventArgs args)
+        {
+            if (args.ChangedSetting.Definition.Section == "Random Pool")
+                cachedWeaponPool.Clear();
         }
 
         private void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            Config.SettingChanged -= OnConfigSettingChanged;
 
             harmony?.UnpatchSelf();
 
@@ -526,6 +599,8 @@ namespace RandomWeaponPerLevel
             TryPatchLevelTransitionMethods();
             TryPatchNextLevelTrigger();
             TryPatchAmuletHelper();
+            TryPatchDeathConsequences();
+            TryPatchSelling();
             TryPatchUnitDie();
         }
 
@@ -598,6 +673,9 @@ namespace RandomWeaponPerLevel
 
         internal void TryRewardRandomWeaponOnEnemyDeath(object unit)
         {
+            if (enableMod == null || !enableMod.Value)
+                return;
+
             if (enableRandomWeaponOnKill == null || !enableRandomWeaponOnKill.Value)
                 return;
 
@@ -612,6 +690,16 @@ namespace RandomWeaponPerLevel
                 if (logKillRewardChecks.Value)
                 {
                     Logger.LogInfo("Kill reward skipped by cooldown.");
+                }
+
+                return;
+            }
+
+            if (grantInProgress || transitionPending)
+            {
+                if (logKillRewardChecks.Value)
+                {
+                    Logger.LogInfo("Kill reward skipped: a grant or level transition is in progress.");
                 }
 
                 return;
@@ -680,6 +768,18 @@ namespace RandomWeaponPerLevel
             }
             catch
             {
+            }
+
+            Unit deadUnit = unit as Unit;
+
+            if (deadUnit != null && !deadUnit.damagedByPlayer)
+            {
+                if (logKillRewardChecks.Value)
+                {
+                    Logger.LogInfo("Kill reward skipped: the player never damaged " + component.gameObject.name);
+                }
+
+                return false;
             }
 
             if (killRewardRequireExperienceOnKill.Value)
@@ -835,6 +935,70 @@ namespace RandomWeaponPerLevel
         }
 
 
+
+        private void TryPatchSelling()
+        {
+            PatchSellMethod("UseSell", nameof(GeneratedWeaponSellHook.UseSellPrefix));
+            PatchSellMethod("DropSell", nameof(GeneratedWeaponSellHook.DropSellPrefix));
+        }
+
+        private void PatchSellMethod(string targetName, string prefixName)
+        {
+            try
+            {
+                MethodInfo target = AccessTools.Method(typeof(InventoryItem), targetName);
+
+                if (target == null)
+                {
+                    Logger.LogWarning("Could not find InventoryItem." + targetName + ".");
+                    return;
+                }
+
+                harmony.Patch(
+                    target,
+                    prefix: new HarmonyMethod(AccessTools.Method(typeof(GeneratedWeaponSellHook), prefixName))
+                );
+
+                Logger.LogInfo("Patched InventoryItem." + targetName + ".");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning("Failed to patch InventoryItem." + targetName + ": " + ex.Message);
+            }
+        }
+
+        private void TryPatchDeathConsequences()
+        {
+            try
+            {
+                MethodInfo target = AccessTools.Method(typeof(GameManager), "HandleDeathConsequences");
+
+                if (target == null)
+                {
+                    Logger.LogWarning("Could not find GameManager.HandleDeathConsequences.");
+                    return;
+                }
+
+                MethodInfo prefix = AccessTools.Method(
+                    typeof(DeathConsequencesCleanupHook),
+                    nameof(DeathConsequencesCleanupHook.Prefix)
+                );
+
+                if (prefix == null)
+                {
+                    Logger.LogWarning("Could not find DeathConsequencesCleanupHook.Prefix.");
+                    return;
+                }
+
+                harmony.Patch(target, prefix: new HarmonyMethod(prefix));
+
+                Logger.LogInfo("Patched GameManager.HandleDeathConsequences.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning("Failed to patch GameManager.HandleDeathConsequences: " + ex.Message);
+            }
+        }
 
         private void TryPatchAmuletHelper()
         {
@@ -1073,8 +1237,32 @@ namespace RandomWeaponPerLevel
             if (!enableMod.Value)
                 return;
 
+            UpdateTransitionPending();
             HandleDebugKey();
             HandleLevelSignatureAutoGive();
+        }
+
+        private void UpdateTransitionPending()
+        {
+            if (!transitionPending)
+                return;
+
+            bool loading = false;
+
+            try
+            {
+                GameManager gameManager = StaticInstance<GameManager>.Instance;
+
+                loading = gameManager != null &&
+                          (gameManager.gameState == GameState.Loading ||
+                           gameManager.gameState == GameState.Uninitialized);
+            }
+            catch
+            {
+            }
+
+            if (loading || Time.unscaledTime >= transitionPendingExpiry)
+                transitionPending = false;
         }
 
         internal bool ShouldCleanupBeforeLevelTransition()
@@ -1111,12 +1299,30 @@ namespace RandomWeaponPerLevel
 
             try
             {
+                ReleaseHandsInstanceIfNotHeld(item);
                 item.GetRemovedByExternalFactor(reason);
             }
             catch (Exception ex)
             {
                 Log?.LogWarning("Failed to remove generated weapon: " + ex.Message);
             }
+        }
+
+        // The game only clears the hands instance of the selected slot when a weapon is unequipped.
+        private static void ReleaseHandsInstanceIfNotHeld(InventoryItem item)
+        {
+            GameManager gameManager = StaticInstance<GameManager>.Instance;
+            EquipmentManager equipmentManager = gameManager != null ? gameManager.EquipmentManager : null;
+
+            if (equipmentManager == null)
+                return;
+
+            PaperdollSlot slot = item.paperdollSlot;
+
+            if (slot != null && equipmentManager.CurrentInventorySlot == slot.exactSlot)
+                return;
+
+            equipmentManager.RemoveUsableFromHands(item);
         }
 
         private void HandleDebugKey()
@@ -1188,6 +1394,9 @@ namespace RandomWeaponPerLevel
             if (!IsInPlayableLevel())
                 return;
 
+            if (!sawLoadingOrLevelTransition)
+                return;
+
             int signature = GetCachedLevelSignature();
 
             if (signature == 0)
@@ -1250,6 +1459,9 @@ namespace RandomWeaponPerLevel
             if (delay > 0f)
                 yield return new WaitForSeconds(delay);
 
+            while (grantInProgress)
+                yield return null;
+
             if (!enableMod.Value || !randomizeOnLevelStart.Value)
             {
                 autoGivenLevelSignatures.Remove(signature);
@@ -1257,7 +1469,7 @@ namespace RandomWeaponPerLevel
                 yield break;
             }
 
-            if (!IsInPlayableLevel())
+            if (!IsInPlayableLevel() || transitionPending)
             {
                 autoGivenLevelSignatures.Remove(signature);
                 sawLoadingOrLevelTransition = true;
@@ -1275,9 +1487,17 @@ namespace RandomWeaponPerLevel
                 yield break;
             }
 
-            yield return GiveRandomWeaponRoutine(reason + " " + signature, signature);
+            IEnumerator grant = GiveRandomWeaponRoutine(reason + " " + signature, signature, true);
 
-            autoGiveRoutineRunning = false;
+            try
+            {
+                while (grant.MoveNext())
+                    yield return grant.Current;
+            }
+            finally
+            {
+                autoGiveRoutineRunning = false;
+            }
         }
 
         private bool IsInPlayableLevel()
@@ -1379,7 +1599,42 @@ namespace RandomWeaponPerLevel
             }
         }
 
-        private IEnumerator GiveRandomWeaponRoutine(string reason, int levelSignature)
+        private IEnumerator GiveRandomWeaponRoutine(string reason, int levelSignature, bool fillWeaponSlots = false)
+        {
+            if (grantInProgress || transitionPending)
+            {
+                if (logActions.Value)
+                {
+                    Logger.LogInfo(
+                        "Skipped random weapon grant by " +
+                        reason +
+                        ": " +
+                        (grantInProgress ? "another grant is running." : "a level transition is in progress.")
+                    );
+                }
+
+                yield break;
+            }
+
+            grantInProgress = true;
+
+            try
+            {
+                IEnumerator grant = generatedWeaponCount.Value >= 2
+                    ? GiveTwoSlotWeaponsRoutine(reason, levelSignature, fillWeaponSlots ? 2 : 1)
+                    : GiveSingleWeaponRoutine(reason, levelSignature);
+
+                // Driven by hand so that an exception in the grant still reaches the finally block.
+                while (grant.MoveNext())
+                    yield return grant.Current;
+            }
+            finally
+            {
+                grantInProgress = false;
+            }
+        }
+
+        private IEnumerator GiveSingleWeaponRoutine(string reason, int levelSignature)
         {
             ItemGrid backpack = GetPlayerBackpackGrid();
 
@@ -1425,68 +1680,48 @@ namespace RandomWeaponPerLevel
                 yield break;
             }
 
+            if (transitionPending)
+                yield break;
+
             HashSet<InventoryItem> beforeItems = CapturePlayerInventoryItems();
 
-            try
-            {
-                StaticInstance<UIManager>.Instance.InventoryUI.SpawnItemInSlot(weapon, targetSlot, null);
-
-                if (announcePickup.Value && backpack != null)
-                {
-                    try
-                    {
-                        backpack.PlayPickupNote(weapon, null);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogWarning("Failed to spawn random weapon " + GetWeaponName(weapon) + " into " + targetSlot + ": " + ex.Message);
+            if (!TrySpawnWeaponInSlot(weapon, targetSlot, backpack))
                 yield break;
-            }
+
+            InventoryItem createdItem = MarkItemSpawnedInSlot(weapon, targetSlot, reason, levelSignature);
+            bool markedAtSpawn = createdItem != null;
 
             int waitFrames = Mathf.Clamp(postCreateWaitFrames.Value, 1, 60);
 
             for (int i = 0; i < waitFrames; i++)
                 yield return null;
 
-            InventoryItem createdItem = FindNewInventoryItem(beforeItems, weapon);
+            if (markedAtSpawn && createdItem == null)
+                yield break;
 
-            if (createdItem == null)
+            if (!markedAtSpawn)
             {
-                createdItem = GetItemInWeaponSlot(targetSlot);
+                createdItem = FindNewInventoryItem(beforeItems, weapon);
+
+                if (createdItem == null)
+                {
+                    createdItem = GetItemInWeaponSlot(targetSlot);
+                }
+
+                if (createdItem != null)
+                {
+                    MarkGeneratedWeapon(createdItem, reason, levelSignature);
+                }
             }
 
             if (createdItem != null)
             {
-                MarkGeneratedWeapon(createdItem, reason, levelSignature);
-
                 if (forceSelectGeneratedWeapon.Value)
                 {
                     TrySelectWeaponSlot(targetSlot);
                 }
 
-                int appliedOilCount = ApplyRandomOilsIfNeeded(createdItem);
-                int appliedScrollCount = ApplyRandomScrollsIfNeeded(createdItem);
-
-                GrantMinimumRankForAppliedEnchantments(
-                    createdItem,
-                    appliedOilCount + appliedScrollCount
-                );
-
-                TrySyncInstancedWeapon(createdItem);
-
-                int appliedAttachmentCount = ApplyRandomAttachmentsIfNeeded(createdItem);
-
-                TrySyncInstancedWeapon(createdItem);
-
-                NormalizeDurabilityIfNeeded(createdItem);
-                FixDurabilityIfNeeded(createdItem);
-
-                TrySyncInstancedWeapon(createdItem);
+                ApplyGeneratedWeaponUpgrades(createdItem);
 
                 if (forceSelectGeneratedWeapon.Value)
                 {
@@ -1499,23 +1734,302 @@ namespace RandomWeaponPerLevel
                 }
             }
 
-            if (logActions.Value)
-            {
-                string itemInfo = createdItem != null
-                    ? BuildCreatedItemInfo(createdItem)
-                    : "created item not found after SpawnItemInSlot";
+            LogGeneratedWeapon(reason, targetSlot, weapon, createdItem);
+        }
 
-                Logger.LogInfo(
-                    "Generated random weapon by " +
-                    reason +
-                    " into " +
-                    targetSlot +
-                    ": " +
-                    GetWeaponName(weapon) +
-                    " (" +
-                    itemInfo +
-                    ")"
-                );
+        private IEnumerator GiveTwoSlotWeaponsRoutine(string reason, int levelSignature, int weaponsToGive)
+        {
+            ItemGrid backpack = GetPlayerBackpackGrid();
+
+            if (backpack == null)
+            {
+                Logger.LogWarning("Could not give random weapon: PlayerBackpackGrid is null.");
+                yield break;
+            }
+
+            HashSet<InventoryItem> createdThisGrant = new HashSet<InventoryItem>();
+            InventorySlot slotToSelect = InventorySlot.None;
+
+            for (int i = 0; i < weaponsToGive && !transitionPending; i++)
+            {
+                WeaponSO weapon = PickRandomWeapon();
+
+                if (weapon == null)
+                {
+                    Logger.LogWarning("Could not give random weapon: no valid WeaponSO found.");
+                    break;
+                }
+
+                if (cleanupOldGeneratedWeapons.Value)
+                {
+                    RemoveGeneratedWeaponsOutsideWeaponSlots();
+                }
+
+                InventorySlot targetSlot = PrepareNextGeneratedWeaponSlot(createdThisGrant);
+
+                if (targetSlot == InventorySlot.None)
+                {
+                    if (createdThisGrant.Count > 0)
+                    {
+                        Logger.LogInfo("Gave fewer generated weapons than requested: no room to move the other equipped weapon.");
+                    }
+                    else
+                    {
+                        Logger.LogWarning("Could not give random weapon: no usable Weapon0/Weapon1 slot. Backpack may be full.");
+                    }
+
+                    break;
+                }
+
+                yield return null;
+
+                if (!IsWeaponSlotEmpty(targetSlot))
+                {
+                    Logger.LogWarning("Could not give random weapon: target slot is still occupied: " + targetSlot);
+                    break;
+                }
+
+                if (transitionPending)
+                    break;
+
+                if (!TrySpawnWeaponInSlot(weapon, targetSlot, backpack))
+                    break;
+
+                InventoryItem createdItem = MarkItemSpawnedInSlot(weapon, targetSlot, reason, levelSignature);
+
+                if (createdItem == null)
+                {
+                    Logger.LogWarning("Could not find the generated weapon in " + targetSlot + " after spawning it.");
+                    break;
+                }
+
+                createdThisGrant.Add(createdItem);
+
+                int waitFrames = Mathf.Clamp(postCreateWaitFrames.Value, 1, 60);
+
+                for (int frame = 0; frame < waitFrames; frame++)
+                    yield return null;
+
+                if (createdItem == null)
+                    break;
+
+                ApplyGeneratedWeaponUpgrades(createdItem);
+                LogGeneratedWeapon(reason, targetSlot, weapon, createdItem);
+
+                if (slotToSelect == InventorySlot.None)
+                {
+                    slotToSelect = targetSlot;
+                }
+            }
+
+            if (forceSelectGeneratedWeapon.Value && slotToSelect != InventorySlot.None && !transitionPending)
+            {
+                TrySelectWeaponSlot(slotToSelect);
+            }
+        }
+
+        private bool TrySpawnWeaponInSlot(WeaponSO weapon, InventorySlot slot, ItemGrid backpack)
+        {
+            try
+            {
+                StaticInstance<UIManager>.Instance.InventoryUI.SpawnItemInSlot(weapon, slot, null);
+
+                if (announcePickup.Value && backpack != null)
+                {
+                    try
+                    {
+                        backpack.PlayPickupNote(weapon, null);
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning("Failed to spawn random weapon " + GetWeaponName(weapon) + " into " + slot + ": " + ex.Message);
+                return false;
+            }
+        }
+
+        // Marks the weapon as soon as it exists. An unmarked weapon looks player-owned to every other
+        // code path, and a transition cleanup would leave it in the inventory to be saved.
+        private InventoryItem MarkItemSpawnedInSlot(WeaponSO weapon, InventorySlot slot, string reason, int levelSignature)
+        {
+            InventoryItem item = GetItemInWeaponSlot(slot);
+
+            if (item == null || item.itemDefinition != weapon)
+                return null;
+
+            MarkGeneratedWeapon(item, reason, levelSignature);
+            return item;
+        }
+
+        private void ApplyGeneratedWeaponUpgrades(InventoryItem item)
+        {
+            ApplyRandomRechamberIfNeeded(item);
+
+            int appliedOilCount = ApplyRandomOilsIfNeeded(item);
+            int appliedScrollCount = ApplyRandomScrollsIfNeeded(item);
+
+            GrantMinimumRankForAppliedEnchantments(
+                item,
+                appliedOilCount + appliedScrollCount
+            );
+
+            TrySyncInstancedWeapon(item);
+
+            ApplyRandomAttachmentsIfNeeded(item);
+
+            TrySyncInstancedWeapon(item);
+
+            NormalizeDurabilityIfNeeded(item);
+            FixDurabilityIfNeeded(item);
+
+            TrySyncInstancedWeapon(item);
+        }
+
+        private void ApplyRandomRechamberIfNeeded(InventoryItem item)
+        {
+            if (!enableRandomRechamber.Value)
+                return;
+
+            WeaponSO weapon = item.itemDefinition as WeaponSO;
+
+            if (weapon == null)
+                return;
+
+            if (UnityEngine.Random.value > Mathf.Clamp01(rechamberChance.Value))
+                return;
+
+            try
+            {
+                List<CaliberTypes> candidates = RechamberCalibers
+                    .Where(caliber => item.CanRecieveCaliberMod(caliber) && IsRechamberAllowed(weapon, caliber))
+                    .ToList();
+
+                if (candidates.Count == 0)
+                    return;
+
+                CaliberTypes previous = item.CurrentCaliber;
+                CaliberTypes rolled = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+
+                // Not Weapon.OnCaliberMod: it moves the loaded magazine into the player's ammo reserves
+                // and forces a reload. Not InventoryItem.ChangeWeaponCaliber: it writes the save.
+                item.SetCaliber(rolled);
+                item.stats.SetProjectileAmountFromItem(item);
+                item.stats.SetSpreadAmountFromItem(item);
+                item.stats.SetDamageAmountFromItem(item);
+
+                GameObject instance = GetEquipmentManager()?.GetInstancedInventoryItem(item);
+                Weapon instancedWeapon = instance != null ? instance.GetComponent<Weapon>() : null;
+
+                if (instancedWeapon != null)
+                {
+                    instancedWeapon.SyncCaliberModels();
+                    instancedWeapon.GetStoredAmmo();
+                }
+
+                if (logActions.Value)
+                {
+                    Logger.LogInfo(
+                        "Rechambered generated weapon " + GetWeaponName(weapon) + ": " + previous + " -> " + rolled
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning("Failed to rechamber " + GetWeaponName(weapon) + ": " + ex.Message);
+            }
+        }
+
+        private bool IsRechamberAllowed(WeaponSO weapon, CaliberTypes caliber)
+        {
+            // A fixed damage value ignores the caliber, so pellets would multiply it past any cap.
+            if (weapon.overrideDamage != 0f)
+                return false;
+
+            CaliberType current = weapon.caliber.GetAsset();
+            CaliberType target = caliber.GetAsset();
+
+            if (current == null || target == null)
+                return false;
+
+            float currentDamage = current.baseDamage * current.numberOfProjectiles;
+            float targetDamage = target.baseDamage * target.numberOfProjectiles;
+
+            if (currentDamage <= 0f || targetDamage / currentDamage > maxRechamberDamageRatio.Value)
+                return false;
+
+            return target.numberOfProjectiles * weapon.rpm / 60f <= MaxRechamberProjectilesPerSecond;
+        }
+
+        private void LogGeneratedWeapon(string reason, InventorySlot slot, WeaponSO weapon, InventoryItem createdItem)
+        {
+            if (!logActions.Value)
+                return;
+
+            string itemInfo = createdItem != null
+                ? BuildCreatedItemInfo(createdItem)
+                : "created item not found after SpawnItemInSlot";
+
+            Logger.LogInfo(
+                "Generated random weapon by " +
+                reason +
+                " into " +
+                slot +
+                ": " +
+                GetWeaponName(weapon) +
+                " (" +
+                itemInfo +
+                ")"
+            );
+        }
+
+        // Empty slots first, then slots holding the player's own weapon, then the older generated weapon.
+        private InventorySlot PrepareNextGeneratedWeaponSlot(HashSet<InventoryItem> createdThisGrant)
+        {
+            IEnumerable<InventorySlot> slots = GetPreferredWeaponSlotOrder()
+                .Where(slot => !createdThisGrant.Contains(GetItemInWeaponSlot(slot)))
+                .OrderBy(slot => GetSlotReplacementRank(slot));
+
+            foreach (InventorySlot slot in slots)
+            {
+                if (TryPrepareWeaponSlot(slot))
+                    return slot;
+            }
+
+            return InventorySlot.None;
+        }
+
+        private int GetSlotReplacementRank(InventorySlot slot)
+        {
+            InventoryItem item = GetItemInWeaponSlot(slot);
+
+            if (item == null)
+                return int.MinValue;
+
+            RandomWeaponMarker marker = item.GetComponent<RandomWeaponMarker>();
+
+            // Generation ids start at 1, so every generated weapon sorts after the player's own.
+            return marker != null ? marker.generationId : int.MinValue + 1;
+        }
+
+        private void RemoveGeneratedWeaponsOutsideWeaponSlots()
+        {
+            InventoryItem weapon0 = GetItemInWeaponSlot(InventorySlot.Weapon0);
+            InventoryItem weapon1 = GetItemInWeaponSlot(InventorySlot.Weapon1);
+
+            foreach (RandomWeaponMarker marker in Resources.FindObjectsOfTypeAll<RandomWeaponMarker>())
+            {
+                InventoryItem item = marker != null ? marker.GetComponent<InventoryItem>() : null;
+
+                if (item == null || item == weapon0 || item == weapon1)
+                    continue;
+
+                RemoveGeneratedWeaponSafely(item, "Random Weapon Per Level cleanup");
             }
         }
 
@@ -1568,6 +2082,14 @@ namespace RandomWeaponPerLevel
                 return result;
             }
 
+            // FirstAvailable: an empty slot wins, so an equipped weapon only moves when it has to.
+            if (!IsWeaponSlotEmpty(InventorySlot.Weapon0) && IsWeaponSlotEmpty(InventorySlot.Weapon1))
+            {
+                result.Add(InventorySlot.Weapon1);
+                result.Add(InventorySlot.Weapon0);
+                return result;
+            }
+
             result.Add(InventorySlot.Weapon0);
             result.Add(InventorySlot.Weapon1);
             return result;
@@ -1589,6 +2111,7 @@ namespace RandomWeaponPerLevel
             {
                 try
                 {
+                    ReleaseHandsInstanceIfNotHeld(existing);
                     existing.GetRemovedByExternalFactor("Random Weapon Per Level replacing generated weapon");
                     return true;
                 }
@@ -1751,6 +2274,7 @@ namespace RandomWeaponPerLevel
 
                     try
                     {
+                        ReleaseHandsInstanceIfNotHeld(item);
                         item.GetRemovedByExternalFactor("Random Weapon Per Level cleanup");
                         removed++;
                     }
@@ -2656,14 +3180,11 @@ namespace RandomWeaponPerLevel
             if (requireUsableByPlayer.Value && !weapon.usableByPlayer)
                 return false;
 
-            if (gunsOnly.Value)
-            {
-                if (weapon.IsMelee)
-                    return false;
+            if (weapon.deprecated || !weapon.AllowedInGame)
+                return false;
 
-                if (weapon.IsThrowable)
-                    return false;
-            }
+            if (weapon.IsMelee || weapon.IsThrowable)
+                return false;
 
             if (excludeStartsEmpty.Value && weapon.startsEmpty)
                 return false;
@@ -2781,6 +3302,46 @@ namespace RandomWeaponPerLevel
                 return weapon.displayName;
 
             return weapon.name;
+        }
+    }
+
+    internal static class GeneratedWeaponSellHook
+    {
+        public static bool UseSellPrefix(InventoryItem __instance)
+        {
+            return !Plugin.IsGeneratedWeapon(__instance);
+        }
+
+        public static bool DropSellPrefix(InventoryItem __instance)
+        {
+            if (!Plugin.IsGeneratedWeapon(__instance))
+                return true;
+
+            __instance.DroppedOnInvalid();
+            return false;
+        }
+    }
+
+    internal static class DeathConsequencesCleanupHook
+    {
+        public static void Prefix()
+        {
+            try
+            {
+                if (Plugin.Instance == null)
+                    return;
+
+                Plugin.Instance.CleanupGeneratedWeaponsForTransition(
+                    "GameManager.HandleDeathConsequences"
+                );
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogWarning(
+                    "Failed to cleanup generated weapons in GameManager.HandleDeathConsequences: " +
+                    ex.Message
+                );
+            }
         }
     }
 

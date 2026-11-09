@@ -1,0 +1,400 @@
+{
+  "entries": [
+    {
+      "key": "plugin.name",
+      "value": "軍備競賽"
+    },
+    {
+      "key": "plugin.description",
+      "value": "在遊玩過程中產生隨機武器、升級與獎勵。"
+    },
+    {
+      "key": "section.General",
+      "value": "一般"
+    },
+    {
+      "key": "section.Kill Reward",
+      "value": "擊殺獎勵"
+    },
+    {
+      "key": "section.Safety",
+      "value": "安全"
+    },
+    {
+      "key": "section.Timing",
+      "value": "時機"
+    },
+    {
+      "key": "section.Debug",
+      "value": "除錯"
+    },
+    {
+      "key": "section.Random Pool",
+      "value": "隨機池"
+    },
+    {
+      "key": "section.Random Upgrades",
+      "value": "隨機升級"
+    },
+    {
+      "key": "entry.General.EnableMod.name",
+      "value": "啟用模組"
+    },
+    {
+      "key": "entry.General.EnableMod.description",
+      "value": "啟用這個模組。"
+    },
+    {
+      "key": "entry.General.RandomizeOnLevelStart.name",
+      "value": "進入關卡時發放武器"
+    },
+    {
+      "key": "entry.General.RandomizeOnLevelStart.description",
+      "value": "進入非安全區關卡時發放隨機武器。"
+    },
+    {
+      "key": "entry.Kill Reward.EnableRandomWeaponOnKill.name",
+      "value": "擊殺時發放隨機武器"
+    },
+    {
+      "key": "entry.Kill Reward.EnableRandomWeaponOnKill.description",
+      "value": "開啟後，擊殺符合條件的敵人會獲得一把隨機產生的武器。"
+    },
+    {
+      "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.name",
+      "value": "擊殺獎勵冷卻"
+    },
+    {
+      "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.description",
+      "value": "擊殺獎勵的冷卻時間（秒）。"
+    },
+    {
+      "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.name",
+      "value": "擊殺獎勵僅限可遊玩關卡"
+    },
+    {
+      "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.description",
+      "value": "開啟後，擊殺獎勵只在可遊玩的非安全區關卡觸發。"
+    },
+    {
+      "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.name",
+      "value": "擊殺獎勵要求目標有 EXP"
+    },
+    {
+      "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.description",
+      "value": "開啟後，只有擊殺 EXP 大於 0 的單位才會觸發獎勵，可以排除大部分道具和非敵對物件。"
+    },
+    {
+      "key": "entry.Kill Reward.LogKillRewardChecks.name",
+      "value": "記錄擊殺獎勵檢查"
+    },
+    {
+      "key": "entry.Kill Reward.LogKillRewardChecks.description",
+      "value": "記錄擊殺獎勵的詳細檢查過程。正常遊玩請保持關閉。"
+    },
+    {
+      "key": "entry.General.AnnouncePickup.name",
+      "value": "提示拾取"
+    },
+    {
+      "key": "entry.General.AnnouncePickup.description",
+      "value": "產生隨機武器時顯示拾取提示。"
+    },
+    {
+      "key": "entry.General.PreferredWeaponSlot.name",
+      "value": "優先武器欄位"
+    },
+    {
+      "key": "entry.General.PreferredWeaponSlot.description",
+      "value": "產生的武器優先放入哪個武器欄位。"
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.name",
+      "value": "產生武器數量"
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.description",
+      "value": "同時持有的產生武器數量。設為 2 時，進入關卡會填滿兩個武器欄位，每次擊殺替換較舊的那把產生武器。你已裝備的武器會移到背包。"
+    },
+    {
+      "key": "entry.General.ForceSelectGeneratedWeapon.name",
+      "value": "自動切換到產生武器"
+    },
+    {
+      "key": "entry.General.ForceSelectGeneratedWeapon.description",
+      "value": "產生武器裝備後自動切換到它。"
+    },
+    {
+      "key": "entry.General.CleanupOldGeneratedWeapons.name",
+      "value": "清理舊的產生武器"
+    },
+    {
+      "key": "entry.General.CleanupOldGeneratedWeapons.description",
+      "value": "產生新武器前，移除先前由本模組產生的武器。"
+    },
+    {
+      "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.name",
+      "value": "切換關卡前清理產生武器"
+    },
+    {
+      "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.description",
+      "value": "在切換關卡和死亡結算前移除產生武器，避免它們被寫入存檔。"
+    },
+    {
+      "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.name",
+      "value": "丟棄時銷毀產生武器"
+    },
+    {
+      "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.description",
+      "value": "玩家嘗試丟棄產生武器時直接銷毀，避免撿起後遺失標記。"
+    },
+    {
+      "key": "entry.Timing.AutoGiveDelayAfterLevelStart.name",
+      "value": "進入關卡後的發放延遲"
+    },
+    {
+      "key": "entry.Timing.AutoGiveDelayAfterLevelStart.description",
+      "value": "進入可遊玩關卡後，等待多久再發放武器。"
+    },
+    {
+      "key": "entry.Timing.PostCreateWaitFrames.name",
+      "value": "產生後等待影格數"
+    },
+    {
+      "key": "entry.Timing.PostCreateWaitFrames.description",
+      "value": "產生武器後等待多少影格再套用隨機升級。"
+    },
+    {
+      "key": "entry.Timing.SceneSignatureCheckInterval.name",
+      "value": "關卡偵測間隔"
+    },
+    {
+      "key": "entry.Timing.SceneSignatureCheckInterval.description",
+      "value": "多久偵測一次是否進入了新關卡。"
+    },
+    {
+      "key": "entry.Debug.DebugKeyEnabled.name",
+      "value": "啟用除錯按鍵"
+    },
+    {
+      "key": "entry.Debug.DebugKeyEnabled.description",
+      "value": "允許用除錯按鍵產生武器。"
+    },
+    {
+      "key": "entry.Debug.DebugKey.name",
+      "value": "除錯按鍵"
+    },
+    {
+      "key": "entry.Debug.DebugKey.description",
+      "value": "按下後產生一把隨機武器，可以重複使用。"
+    },
+    {
+      "key": "entry.Debug.LogActions.name",
+      "value": "記錄產生資訊"
+    },
+    {
+      "key": "entry.Debug.LogActions.description",
+      "value": "在記錄檔中記錄產生武器的資訊。"
+    },
+    {
+      "key": "entry.Debug.LogWeaponPool.name",
+      "value": "記錄武器池"
+    },
+    {
+      "key": "entry.Debug.LogWeaponPool.description",
+      "value": "記錄隨機池中的每把武器。除非除錯，否則請保持關閉。"
+    },
+    {
+      "key": "entry.Random Pool.ExcludeStartsEmpty.name",
+      "value": "排除初始無彈武器"
+    },
+    {
+      "key": "entry.Random Pool.ExcludeStartsEmpty.description",
+      "value": "排除標記為初始無彈的武器。"
+    },
+    {
+      "key": "entry.Random Pool.RequireWeaponPrefab.name",
+      "value": "要求武器預製件"
+    },
+    {
+      "key": "entry.Random Pool.RequireWeaponPrefab.description",
+      "value": "只包含有預製件的武器。建議開啟。"
+    },
+    {
+      "key": "entry.Random Pool.RequireAmmoMagazine.name",
+      "value": "要求有彈匣"
+    },
+    {
+      "key": "entry.Random Pool.RequireAmmoMagazine.description",
+      "value": "只包含彈匣容量大於 0 的武器。"
+    },
+    {
+      "key": "entry.Random Pool.RequireUsableByPlayer.name",
+      "value": "要求玩家可用"
+    },
+    {
+      "key": "entry.Random Pool.RequireUsableByPlayer.description",
+      "value": "只包含玩家可以使用的武器。"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomOils.name",
+      "value": "啟用隨機油"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomOils.description",
+      "value": "為產生武器添加隨機油。"
+    },
+    {
+      "key": "entry.Random Upgrades.MinOilCount.name",
+      "value": "最少油數量"
+    },
+    {
+      "key": "entry.Random Upgrades.MinOilCount.description",
+      "value": "產生武器至少添加的油數量。"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxOilCount.name",
+      "value": "最多油數量"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxOilCount.description",
+      "value": "產生武器最多添加的油數量。"
+    },
+    {
+      "key": "entry.Random Upgrades.RespectEnchantmentSlots.name",
+      "value": "遵守附魔欄位"
+    },
+    {
+      "key": "entry.Random Upgrades.RespectEnchantmentSlots.description",
+      "value": "開啟後，只在武器有空餘附魔欄位時添加油和卷軸。關閉後，無論排名如何都能造出混沌武器。"
+    },
+    {
+      "key": "entry.Random Upgrades.GrantRankForAppliedOils.name",
+      "value": "依油數量提升排名"
+    },
+    {
+      "key": "entry.Random Upgrades.GrantRankForAppliedOils.description",
+      "value": "開啟後，產生武器會獲得足夠的 EXP，使排名與已添加的附魔總數相符。"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomScrolls.name",
+      "value": "啟用隨機卷軸"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomScrolls.description",
+      "value": "為產生武器添加隨機卷軸。"
+    },
+    {
+      "key": "entry.Random Upgrades.ScrollChance.name",
+      "value": "卷軸機率"
+    },
+    {
+      "key": "entry.Random Upgrades.ScrollChance.description",
+      "value": "產生武器獲得卷軸的機率。0 = 從不，1 = 總是。"
+    },
+    {
+      "key": "entry.Random Upgrades.MinScrollCount.name",
+      "value": "最少卷軸數量"
+    },
+    {
+      "key": "entry.Random Upgrades.MinScrollCount.description",
+      "value": "獲得卷軸時的最少數量。"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxScrollCount.name",
+      "value": "最多卷軸數量"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxScrollCount.description",
+      "value": "獲得卷軸時的最多數量。"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomAttachments.name",
+      "value": "啟用隨機配件"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomAttachments.description",
+      "value": "為產生武器添加相容的隨機配件。"
+    },
+    {
+      "key": "entry.Random Upgrades.AttachmentChance.name",
+      "value": "配件機率"
+    },
+    {
+      "key": "entry.Random Upgrades.AttachmentChance.description",
+      "value": "產生武器獲得配件的機率。0 = 從不，1 = 總是。"
+    },
+    {
+      "key": "entry.Random Upgrades.MinAttachmentCount.name",
+      "value": "最少配件數量"
+    },
+    {
+      "key": "entry.Random Upgrades.MinAttachmentCount.description",
+      "value": "獲得配件時的最少數量。"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxAttachmentCount.name",
+      "value": "最多配件數量"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxAttachmentCount.description",
+      "value": "獲得配件時的最多數量。"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.name",
+      "value": "啟用隨機改造口徑"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.description",
+      "value": "讓產生武器隨機換成另一種口徑，效果與槍枝改造工具組相同。"
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.name",
+      "value": "改造口徑機率"
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.description",
+      "value": "產生武器改造口徑的機率。0 = 從不，1 = 總是。"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.name",
+      "value": "改造口徑最大傷害倍率"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.description",
+      "value": "如果某種口徑會讓武器單發傷害超過這個倍數，就略過它。"
+    },
+    {
+      "key": "entry.Safety.FixLowDurability.name",
+      "value": "修復低耐久度"
+    },
+    {
+      "key": "entry.Safety.FixLowDurability.description",
+      "value": "產生武器的耐久度低於最低值時提高到最低值。"
+    },
+    {
+      "key": "entry.Safety.MinimumDurabilityNormalized.name",
+      "value": "最低耐久度比例"
+    },
+    {
+      "key": "entry.Safety.MinimumDurabilityNormalized.description",
+      "value": "產生武器的最低耐久度。0.5 = 至少 50%。"
+    },
+    {
+      "key": "value.General.PreferredWeaponSlot.Weapon0",
+      "value": "武器 0"
+    },
+    {
+      "key": "value.General.PreferredWeaponSlot.Weapon1",
+      "value": "武器 1"
+    },
+    {
+      "key": "value.General.PreferredWeaponSlot.Random",
+      "value": "隨機"
+    },
+    {
+      "key": "value.General.PreferredWeaponSlot.FirstAvailable",
+      "value": "第一個可用"
+    }
+  ]
+}

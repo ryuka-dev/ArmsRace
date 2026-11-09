@@ -50,7 +50,7 @@
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.description",
-      "value": "Give one random weapon when entering a non-safe-zone level."
+      "value": "Give random weapons when entering a non-safe-zone level."
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.name",
@@ -109,6 +109,14 @@
       "value": "Which weapon slot should receive the generated weapon."
     },
     {
+      "key": "entry.General.GeneratedWeaponCount.name",
+      "value": "Generated Weapon Count"
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.description",
+      "value": "How many generated weapons you carry at once. At 2, entering a level fills both weapon slots and each kill replaces the older generated weapon. Weapons you have equipped move to your backpack."
+    },
+    {
       "key": "entry.General.ForceSelectGeneratedWeapon.name",
       "value": "Force Select Generated Weapon"
     },
@@ -130,7 +138,7 @@
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.description",
-      "value": "Remove runtime-tagged generated weapons before GameManager.SwitchLevel runs. This prevents generated weapons from entering cross-level equipment data."
+      "value": "Remove generated weapons before level transitions and death handling, so they never reach your save."
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.name",
@@ -195,14 +203,6 @@
     {
       "key": "entry.Debug.LogWeaponPool.description",
       "value": "Log every weapon in the random pool. Keep false unless debugging."
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.name",
-      "value": "Guns Only"
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.description",
-      "value": "Exclude melee and throwable weapons."
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.name",
@@ -339,6 +339,30 @@
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.description",
       "value": "Maximum attachments if attachment generation succeeds."
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.name",
+      "value": "Enable Random Rechamber"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.description",
+      "value": "Let generated weapons roll a different caliber, like using a Chamber Chisel."
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.name",
+      "value": "Rechamber Chance"
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.description",
+      "value": "Chance for a generated weapon to be rechambered. 0 = never, 1 = always."
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.name",
+      "value": "Max Rechamber Damage Ratio"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.description",
+      "value": "A caliber is skipped if it would multiply the weapon's damage per shot by more than this."
     },
     {
       "key": "entry.Safety.FixLowDurability.name",

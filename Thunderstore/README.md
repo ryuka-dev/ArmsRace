@@ -3,233 +3,91 @@
 You accidentally brought habits from another world into SULFUR.  
 Now you have to Arms Race your way out.
 
-**Arms Race** is a BepInEx mod for **SULFUR** that turns weapon progression into a chaotic run-based weapon rotation system. Entering a level gives you a randomized weapon, and killing enemies can grant a new randomized weapon after a short cooldown.
+Enter a level and you get a random gun. Kill something and it turns into a different random gun. You don't get to keep any of them.
 
-Generated weapons use the game’s existing weapon systems: random vanilla weapons, random oils, random scrolls, compatible attachments, rank adjustment, and durability safety.
+## How it plays
 
-## Features
+Each level starts with a random gun in your hands, about two seconds after you arrive. Every kill gives you a new one, at most once per second by default. An enemy only counts if you hurt it yourself and it's worth XP, so something that dies on its own won't swap your gun.
 
-- Gives a random weapon when entering a non-safe-zone level.
-- Killing eligible enemies can grant a new random weapon.
-- Kill reward has a configurable cooldown.
-- Generated weapons are placed into Weapon Slot 1 or Weapon Slot 2 when possible.
-- Old generated weapons are removed before generating a new one.
-- Generated weapons are removed before level transitions.
-- Generated weapons are removed when using The Amulet to return to the safe zone.
-- Generated weapons are destroyed if dropped, preventing pickup/tag issues.
-- Uses vanilla weapons, oils, scrolls, attachments, rank, and durability systems.
-- Does not modify original game files.
-- Does not permanently add custom mod data to the save file.
+The guns are vanilla weapons with vanilla upgrades rolled on top:
 
-## What Gets Randomized
+- 1 to 5 random oils
+- a 50% chance of scrolls
+- a 60% chance of attachments
+- enough rank to hold what it rolled
+- at least 50% durability
 
-Generated weapons can include:
+The mod doesn't change the weapons themselves, so a copy of the same gun you find in a normal run stays normal.
 
-- A random vanilla weapon
-- Random oils
-- Random scrolls
-- Random compatible attachments
-- Rank adjustment based on applied enchantments
-- Durability normalization and minimum durability protection
+## Two guns at once
 
-This mod does **not** directly modify `WeaponSO` base weapon assets.  
-That means it does not globally alter the original weapon definitions, and it does not permanently change all copies of the same weapon.
+Set `GeneratedWeaponCount` to 2 and every level starts with a random gun in both weapon slots. Each kill replaces the older of the two and puts the new one in your hands, so you're holding your newest gun with the previous one as a backup.
 
-## Arms Race Behavior
+**Your own guns get moved to your backpack to make room.** With the default of 1, a gun only moves when both slots are taken. With 2, both of them move. On Medium you lose unequipped loot when you die, and that includes a gun the mod moved to your backpack, so stash anything you care about before you head out.
 
-By default:
+If your backpack has no room for a gun, it stays in its slot and you get one generated weapon fewer.
 
-- Entering a playable non-safe-zone level grants one random generated weapon.
-- Killing an eligible enemy can grant another generated weapon.
-- Kill reward cooldown is 1 second.
-- Each new generated weapon removes the previous generated weapon.
-- Debug key spawning is disabled by default.
+## Rechambering
 
-The intended experience is:
+This one is off by default. Turn on `EnableRandomRechamber` and generated guns can roll a different caliber, the same thing a Chamber Chisel does in a normal run. `RechamberChance` sets how often it happens (25% by default).
 
-```text
-Get a random weapon.
-Fight with it.
-Kill enemies.
-Get another random weapon.
-Keep adapting.
-````
+A rechambered gun starts with a full magazine. Reloading it takes ammo of the new caliber. Lasers and arrow weapons can't be rechambered, same as in the base game.
 
-## Generated Weapon Lifetime
+A caliber is skipped if it would more than double the gun's damage per shot, which you can change with `MaxRechamberDamageRatio`. Guns that fire faster than 600 RPM never roll 12 gauge.
 
-Generated weapons are designed for the current run/level flow.
+## These guns aren't yours
 
-To keep the game safe and avoid save issues:
+Generated weapons disappear when you change levels, use the Amulet or die. Dropping one destroys it, and vendors won't buy them. The mod keeps nothing in your save.
 
-* Generated weapons are runtime-tagged.
-* Old generated weapons are removed when a new generated weapon is created.
-* Generated weapons are removed before level transitions.
-* Generated weapons are removed before Amulet teleport.
-* Dropping a generated weapon destroys it instead of creating a ground pickup.
+Generated guns count for achievements, so you might unlock some of them early.
 
-This is intentional. Generated weapons are not meant to be stored permanently.
+## Settings
 
-## Configuration
-
-After launching the game once with the mod installed, a config file will be created:
+The config file shows up after you launch the game once:
 
 ```text
 BepInEx/config/kumo.sulfur.random_weapon_per_level.cfg
 ```
 
-Main options include:
+If you have SULFUR Config installed, you can change everything in game instead. Its setting names and descriptions are translated into 15 languages.
+
+The ones you'll most likely want:
 
 ```ini
 [General]
-EnableMod = true
 RandomizeOnLevelStart = true
+GeneratedWeaponCount = 1
 PreferredWeaponSlot = FirstAvailable
 ForceSelectGeneratedWeapon = true
-CleanupOldGeneratedWeapons = true
 
 [Kill Reward]
 EnableRandomWeaponOnKill = true
 RandomWeaponOnKillCooldown = 1
-KillRewardRequiresPlayableLevel = true
-KillRewardRequireExperienceOnKill = true
 
 [Random Upgrades]
-EnableRandomOils = true
 MinOilCount = 1
 MaxOilCount = 5
-EnableRandomScrolls = true
 ScrollChance = 0.5
-EnableRandomAttachments = true
 AttachmentChance = 0.6
-GrantRankForAppliedOils = true
-RespectEnchantmentSlots = false
-
-[Safety]
-CleanupGeneratedWeaponsBeforeLevelTransition = true
-DestroyGeneratedWeaponsOnDrop = true
-FixLowDurability = true
-MinimumDurabilityNormalized = 0.5
-
-[Debug]
-DebugKeyEnabled = false
-DebugKey = K
+EnableRandomRechamber = false
+RechamberChance = 0.25
+MaxRechamberDamageRatio = 2
 ```
 
-## Recommended Default Experience
+There's also a debug key that gives you a new gun on demand. It's off unless you set `DebugKeyEnabled = true`.
 
-The default configuration is intended to be chaotic but still playable:
+## Installing
 
-* Oils are always added, from 1 to 5.
-* Higher oil counts are slightly less common.
-* Scrolls have a moderate chance to appear.
-* Attachments have a moderate chance to appear.
-* Kill reward cooldown prevents excessive weapon spam.
-* Debug spawning is disabled unless manually enabled.
+Install it with r2modman, Gale or the Thunderstore Mod Manager.
 
-## Debug Key
+To install by hand, you need BepInEx first. Put `Arms Race.dll` and the `lang` folder in `BepInEx/plugins/ArmsRace/`.
 
-Debug spawning is disabled by default.
-
-To enable it:
-
-```ini
-[Debug]
-DebugKeyEnabled = true
-DebugKey = K
-```
-
-When enabled, pressing the configured key generates a new random weapon using the same mod logic.
-
-## Installation
-
-### Thunderstore / r2modman
-
-Install through Thunderstore Mod Manager or r2modman.
-
-Make sure BepInEx is installed.
-
-### Manual Installation
-
-1. Install BepInEx for SULFUR.
-2. Start the game once so BepInEx creates its folders.
-3. Create a folder for the mod and place `Arms Race.dll` and the `lang` folder inside it:
-
-```text
-BepInEx/plugins/ArmsRace/
-```
-
-4. Start the game.
+To remove it, delete that folder. You can delete the config file too. Your save will still load.
 
 ## Compatibility
 
-This mod should be compatible with most mods that do not heavily rewrite the player inventory, weapon slot, weapon generation, or level transition systems.
+Arms Race can clash with mods that change weapon slots, the inventory, enemy death or level transitions. If another mod also hands you weapons at the start of a level, expect them to fight over your slots.
 
-Potential conflict areas:
+## Source
 
-* Mods that change weapon equipment behavior
-* Mods that change inventory slot behavior
-* Mods that patch enemy death handling
-* Mods that modify level transition logic
-* Mods that replace weapon attachment or enchantment systems
-
-This mod does not edit original game files.
-
-## Known Notes
-
-* Generated weapons are not meant to be kept permanently.
-* Dropping a generated weapon destroys it.
-* If a generated weapon is removed during level transition, that is intended.
-* Some vanilla oils or scrolls may have unusual effects because the mod uses the game’s own upgrade pool.
-* The mod does not directly randomize internal base weapon stats such as raw damage, fire rate, or projectile speed. It randomizes through vanilla weapons and vanilla upgrade systems.
-
-## Uninstallation
-
-Remove the mod folder (`Arms Race.dll` and its `lang` folder) from:
-
-```text
-BepInEx/plugins/
-```
-
-Optionally remove the config file:
-
-```text
-BepInEx/config/kumo.sulfur.random_weapon_per_level.cfg
-```
-
-The mod does not require custom save data to function. Removing the mod should not prevent the game from loading.
-
-## Source Code
-
-The source code for this mod is available in my GitHub repository.
-
-It is shared for learning, reference, and transparency.
-The repository only contains my original mod source code and packaging text. It does not include SULFUR game files, Unity assemblies, BepInEx binaries, paid assets, or decompiled game source.
-
-If you are another modder, feel free to study how the mod works or use it as a reference for your own implementation.
-
-[ryuka-dev/ArmsRace](https://github.com/ryuka-dev/ArmsRace)
-
-## SULFUR Config Localization Support
-
-This mod includes localization files for SULFUR Config.
-
-This localization support is only for the in-game configuration page provided by SULFUR Config. It localizes the mod name, config sections, setting names, and setting descriptions shown in the config UI.
-
-It does not change the game’s own text, item names, dialogue, or gameplay content.
-
-Supported SULFUR Config languages:
-
-- English
-- Simplified Chinese
-- Swedish
-- French
-- Italian
-- German
-- Spanish
-- Portuguese
-- Russian
-- Polish
-- Japanese
-- Korean
-- Turkish
-- Arabic
+The code is at [ryuka-dev/ArmsRace](https://github.com/ryuka-dev/ArmsRace). It only contains my own code and packaging text, no game files or BepInEx binaries. If you're making your own mod, feel free to use it as a reference.

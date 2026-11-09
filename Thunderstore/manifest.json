@@ -1,6 +1,6 @@
 {
   "name": "ArmsRace",
-  "version_number": "1.0.3",
+  "version_number": "1.0.4",
   "website_url": "https://github.com/ryuka-dev/ArmsRace",
   "description": "Kill enemies, get randomized weapons, and Arms Race your way through SULFUR.",
   "dependencies": [

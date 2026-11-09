@@ -6,7 +6,7 @@
     },
     {
       "key": "plugin.description",
-      "value": "Generates random weapons, upgrades, and rewards during a run."
+      "value": "ينشئ أسلحة وترقيات ومكافآت عشوائية أثناء اللعب."
     },
     {
       "key": "section.General",
@@ -26,11 +26,11 @@
     },
     {
       "key": "section.Debug",
-      "value": "تصحيح"
+      "value": "تصحيح الأخطاء"
     },
     {
       "key": "section.Random Pool",
-      "value": "مجموعة عشوائية"
+      "value": "مجموعة الأسلحة العشوائية"
     },
     {
       "key": "section.Random Upgrades",
@@ -38,323 +38,347 @@
     },
     {
       "key": "entry.General.EnableMod.name",
-      "value": "Enable Mod"
+      "value": "تفعيل المود"
     },
     {
       "key": "entry.General.EnableMod.description",
-      "value": "Enable this mod."
+      "value": "يفعّل هذا المود."
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.name",
-      "value": "Randomize On Level Start"
+      "value": "منح سلاح عند بدء المستوى"
     },
     {
       "key": "entry.General.RandomizeOnLevelStart.description",
-      "value": "Give one random weapon when entering a non-safe-zone level."
+      "value": "يمنح أسلحة عشوائية عند دخول مستوى خارج المناطق الآمنة."
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.name",
-      "value": "Enable Random Weapon On Kill"
+      "value": "منح سلاح عشوائي عند القتل"
     },
     {
       "key": "entry.Kill Reward.EnableRandomWeaponOnKill.description",
-      "value": "If true, killing an eligible enemy grants one generated random weapon."
+      "value": "عند التفعيل، يمنحك قتل عدو مؤهل سلاحًا مولدًا عشوائيًا واحدًا."
     },
     {
       "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.name",
-      "value": "Random Weapon On Kill Cooldown"
+      "value": "فترة انتظار مكافأة القتل"
     },
     {
       "key": "entry.Kill Reward.RandomWeaponOnKillCooldown.description",
-      "value": "Cooldown in seconds for random weapon rewards from enemy kills."
+      "value": "فترة الانتظار بالثواني بين مكافآت الأسلحة العشوائية من قتل الأعداء."
     },
     {
       "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.name",
-      "value": "Kill Reward Requires Playable Level"
+      "value": "المكافأة في المستويات القابلة للعب فقط"
     },
     {
       "key": "entry.Kill Reward.KillRewardRequiresPlayableLevel.description",
-      "value": "If true, kill rewards only trigger in playable non-safe-zone levels."
+      "value": "عند التفعيل، تُمنح مكافآت القتل فقط في المستويات القابلة للعب خارج المناطق الآمنة."
     },
     {
       "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.name",
-      "value": "Kill Reward Require Experience On Kill"
+      "value": "المكافأة للأهداف التي تمنح خبرة فقط"
     },
     {
       "key": "entry.Kill Reward.KillRewardRequireExperienceOnKill.description",
-      "value": "If true, only units with ExperienceOnKill > 0 can trigger a random weapon reward. This avoids most props and non-enemy objects."
+      "value": "عند التفعيل، لا تمنح مكافأة السلاح العشوائي إلا الأهداف التي تعطي خبرة عند قتلها. يستبعد هذا معظم الديكورات والأجسام غير المعادية."
     },
     {
       "key": "entry.Kill Reward.LogKillRewardChecks.name",
-      "value": "Log Kill Reward Checks"
+      "value": "تسجيل فحوصات مكافأة القتل"
     },
     {
       "key": "entry.Kill Reward.LogKillRewardChecks.description",
-      "value": "Log detailed kill reward checks. Keep false for normal gameplay."
+      "value": "يسجل تفاصيل فحوصات مكافأة القتل. أبقه معطلًا في اللعب العادي."
     },
     {
       "key": "entry.General.AnnouncePickup.name",
-      "value": "Announce Pickup"
+      "value": "إشعار الحصول على السلاح"
     },
     {
       "key": "entry.General.AnnouncePickup.description",
-      "value": "Show pickup notification when a random weapon is generated."
+      "value": "يعرض إشعارًا عند توليد سلاح عشوائي."
     },
     {
       "key": "entry.General.PreferredWeaponSlot.name",
-      "value": "Preferred Weapon Slot"
+      "value": "خانة السلاح المفضلة"
     },
     {
       "key": "entry.General.PreferredWeaponSlot.description",
-      "value": "Which weapon slot should receive the generated weapon."
+      "value": "خانة السلاح التي يوضع فيها السلاح المولد."
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.name",
+      "value": "عدد الأسلحة المولدة"
+    },
+    {
+      "key": "entry.General.GeneratedWeaponCount.description",
+      "value": "عدد الأسلحة المولدة التي تحملها في وقت واحد. عند القيمة 2 يملأ دخول المستوى خانتي السلاح، وكل قتل يستبدل السلاح المولد الأقدم. تنتقل الأسلحة التي تجهزها إلى حقيبة الظهر."
     },
     {
       "key": "entry.General.ForceSelectGeneratedWeapon.name",
-      "value": "Force Select Generated Weapon"
+      "value": "التبديل تلقائيًا إلى السلاح المولد"
     },
     {
       "key": "entry.General.ForceSelectGeneratedWeapon.description",
-      "value": "Force-select the generated weapon after it is equipped."
+      "value": "يبدّل إلى السلاح المولد تلقائيًا بعد تجهيزه."
     },
     {
       "key": "entry.General.CleanupOldGeneratedWeapons.name",
-      "value": "Cleanup Old Generated Weapons"
+      "value": "إزالة الأسلحة المولدة القديمة"
     },
     {
       "key": "entry.General.CleanupOldGeneratedWeapons.description",
-      "value": "Remove older runtime-tagged weapons generated by this mod before generating a new one."
+      "value": "يزيل الأسلحة التي ولّدها هذا المود سابقًا قبل توليد سلاح جديد."
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.name",
-      "value": "Cleanup Generated Weapons Before Level Transition"
+      "value": "إزالة الأسلحة المولدة قبل الانتقال بين المستويات"
     },
     {
       "key": "entry.Safety.CleanupGeneratedWeaponsBeforeLevelTransition.description",
-      "value": "Remove runtime-tagged generated weapons before GameManager.SwitchLevel runs. This prevents generated weapons from entering cross-level equipment data."
+      "value": "يزيل الأسلحة المولدة قبل الانتقال بين المستويات ومعالجة الموت، حتى لا تصل إلى ملف الحفظ أبدًا."
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.name",
-      "value": "Destroy Generated Weapons On Drop"
+      "value": "تدمير الأسلحة المولدة عند إسقاطها"
     },
     {
       "key": "entry.Safety.DestroyGeneratedWeaponsOnDrop.description",
-      "value": "Destroy runtime-tagged generated weapons when the player tries to drop them. This prevents tag loss through ground pickup data."
+      "value": "يدمر السلاح المولد عندما يحاول اللاعب إسقاطه، ما يمنع ضياع علامته المميزة عند التقاطه من الأرض."
     },
     {
       "key": "entry.Timing.AutoGiveDelayAfterLevelStart.name",
-      "value": "Auto Give Delay After Level Start"
+      "value": "تأخير المنح بعد بدء المستوى"
     },
     {
       "key": "entry.Timing.AutoGiveDelayAfterLevelStart.description",
-      "value": "Delay before giving the level-start random weapon after entering a playable level."
+      "value": "مدة الانتظار قبل منح السلاح بعد دخول مستوى قابل للعب."
     },
     {
       "key": "entry.Timing.PostCreateWaitFrames.name",
-      "value": "Post Create Wait Frames"
+      "value": "إطارات الانتظار بعد التوليد"
     },
     {
       "key": "entry.Timing.PostCreateWaitFrames.description",
-      "value": "Frames to wait after SpawnItemInSlot before searching for the created InventoryItem."
+      "value": "عدد الإطارات التي يُنتظر مرورها بعد توليد السلاح قبل تطبيق الترقيات العشوائية."
     },
     {
       "key": "entry.Timing.SceneSignatureCheckInterval.name",
-      "value": "Scene Signature Check Interval"
+      "value": "الفاصل الزمني لفحص المستوى"
     },
     {
       "key": "entry.Timing.SceneSignatureCheckInterval.description",
-      "value": "How often the mod checks the current level signature."
+      "value": "المدة الفاصلة بين عمليات التحقق من دخول مستوى جديد."
     },
     {
       "key": "entry.Debug.DebugKeyEnabled.name",
-      "value": "Debug Key Enabled"
+      "value": "تفعيل مفتاح التصحيح"
     },
     {
       "key": "entry.Debug.DebugKeyEnabled.description",
-      "value": "Enable debug key spawning."
+      "value": "يتيح توليد الأسلحة بمفتاح التصحيح."
     },
     {
       "key": "entry.Debug.DebugKey.name",
-      "value": "Debug Key"
+      "value": "مفتاح التصحيح"
     },
     {
       "key": "entry.Debug.DebugKey.description",
-      "value": "Press this key to generate one random debug weapon. This can be used repeatedly."
+      "value": "اضغط هذا المفتاح لتوليد سلاح عشوائي واحد. يمكن استخدامه مرارًا."
     },
     {
       "key": "entry.Debug.LogActions.name",
-      "value": "Log Actions"
+      "value": "تسجيل معلومات التوليد"
     },
     {
       "key": "entry.Debug.LogActions.description",
-      "value": "Log generated weapon information."
+      "value": "يسجل معلومات الأسلحة المولدة."
     },
     {
       "key": "entry.Debug.LogWeaponPool.name",
-      "value": "Log Weapon Pool"
+      "value": "تسجيل مجموعة الأسلحة"
     },
     {
       "key": "entry.Debug.LogWeaponPool.description",
-      "value": "Log every weapon in the random pool. Keep false unless debugging."
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.name",
-      "value": "Guns Only"
-    },
-    {
-      "key": "entry.Random Pool.GunsOnly.description",
-      "value": "Exclude melee and throwable weapons."
+      "value": "يسجل كل سلاح في مجموعة الأسلحة العشوائية. أبقه معطلًا ما لم تكن تصحح الأخطاء."
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.name",
-      "value": "Exclude Starts Empty"
+      "value": "استبعاد الأسلحة التي تبدأ فارغة"
     },
     {
       "key": "entry.Random Pool.ExcludeStartsEmpty.description",
-      "value": "Exclude weapons marked as startsEmpty."
+      "value": "يستبعد الأسلحة التي تبدأ بلا ذخيرة."
     },
     {
       "key": "entry.Random Pool.RequireWeaponPrefab.name",
-      "value": "Require Weapon Prefab"
+      "value": "الأسلحة ذات النماذج فقط"
     },
     {
       "key": "entry.Random Pool.RequireWeaponPrefab.description",
-      "value": "Only include weapons with a prefab. Recommended."
+      "value": "يشمل فقط الأسلحة التي لها نموذج داخل اللعبة. يُنصح بتفعيله."
     },
     {
       "key": "entry.Random Pool.RequireAmmoMagazine.name",
-      "value": "Require Ammo Magazine"
+      "value": "الأسلحة ذات المخزن فقط"
     },
     {
       "key": "entry.Random Pool.RequireAmmoMagazine.description",
-      "value": "Only include weapons with iAmmoMax > 0."
+      "value": "يشمل فقط الأسلحة التي تزيد سعة مخزنها على 0."
     },
     {
       "key": "entry.Random Pool.RequireUsableByPlayer.name",
-      "value": "Require Usable By Player"
+      "value": "أسلحة اللاعب فقط"
     },
     {
       "key": "entry.Random Pool.RequireUsableByPlayer.description",
-      "value": "Only include WeaponSO.usableByPlayer weapons."
+      "value": "يشمل فقط الأسلحة التي يستطيع اللاعب استخدامها."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomOils.name",
-      "value": "Enable Random Oils"
+      "value": "تفعيل الزيوت العشوائية"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomOils.description",
-      "value": "Add random oil enchantments to generated weapons."
+      "value": "يضيف زيوتًا عشوائية إلى الأسلحة المولدة."
     },
     {
       "key": "entry.Random Upgrades.MinOilCount.name",
-      "value": "Min Oil Count"
+      "value": "أقل عدد من الزيوت"
     },
     {
       "key": "entry.Random Upgrades.MinOilCount.description",
-      "value": "Minimum random oil enchantments added to generated weapons."
+      "value": "أقل عدد من الزيوت العشوائية يضاف إلى الأسلحة المولدة."
     },
     {
       "key": "entry.Random Upgrades.MaxOilCount.name",
-      "value": "Max Oil Count"
+      "value": "أكبر عدد من الزيوت"
     },
     {
       "key": "entry.Random Upgrades.MaxOilCount.description",
-      "value": "Maximum random oil enchantments added to generated weapons."
+      "value": "أكبر عدد من الزيوت العشوائية يضاف إلى الأسلحة المولدة."
     },
     {
       "key": "entry.Random Upgrades.RespectEnchantmentSlots.name",
-      "value": "Respect Enchantment Slots"
+      "value": "احترام خانات التعويذات"
     },
     {
       "key": "entry.Random Upgrades.RespectEnchantmentSlots.description",
-      "value": "If true, only add oils/scrolls when the weapon has free enchantment slots. If false, this mod can create chaos guns regardless of rank."
+      "value": "عند التفعيل، تضاف الزيوت واللفائف فقط إذا كانت في السلاح خانات تعويذات فارغة. وعند التعطيل، يمكن لهذا المود صنع أسلحة فوضوية بغض النظر عن الرتبة."
     },
     {
       "key": "entry.Random Upgrades.GrantRankForAppliedOils.name",
-      "value": "Grant Rank For Applied Oils"
+      "value": "رفع الرتبة حسب عدد الزيوت"
     },
     {
       "key": "entry.Random Upgrades.GrantRankForAppliedOils.description",
-      "value": "If true, generated weapons gain enough XP to match the total applied enchantment count."
+      "value": "عند التفعيل، تكسب الأسلحة المولدة خبرة كافية لتتناسب رتبتها مع إجمالي التعويذات المضافة."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomScrolls.name",
-      "value": "Enable Random Scrolls"
+      "value": "تفعيل اللفائف العشوائية"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomScrolls.description",
-      "value": "Add random scroll enchantments to generated weapons."
+      "value": "يضيف لفائف عشوائية إلى الأسلحة المولدة."
     },
     {
       "key": "entry.Random Upgrades.ScrollChance.name",
-      "value": "Scroll Chance"
+      "value": "فرصة اللفائف"
     },
     {
       "key": "entry.Random Upgrades.ScrollChance.description",
-      "value": "Chance for a generated weapon to receive scroll enchantments. 0 = never, 1 = always."
+      "value": "فرصة حصول السلاح المولد على لفائف. 0 = أبدًا، 1 = دائمًا."
     },
     {
       "key": "entry.Random Upgrades.MinScrollCount.name",
-      "value": "Min Scroll Count"
+      "value": "أقل عدد من اللفائف"
     },
     {
       "key": "entry.Random Upgrades.MinScrollCount.description",
-      "value": "Minimum scroll enchantments if scroll generation succeeds."
+      "value": "أقل عدد من اللفائف عند الحصول عليها."
     },
     {
       "key": "entry.Random Upgrades.MaxScrollCount.name",
-      "value": "Max Scroll Count"
+      "value": "أكبر عدد من اللفائف"
     },
     {
       "key": "entry.Random Upgrades.MaxScrollCount.description",
-      "value": "Maximum scroll enchantments if scroll generation succeeds."
+      "value": "أكبر عدد من اللفائف عند الحصول عليها."
     },
     {
       "key": "entry.Random Upgrades.EnableRandomAttachments.name",
-      "value": "Enable Random Attachments"
+      "value": "تفعيل الملحقات العشوائية"
     },
     {
       "key": "entry.Random Upgrades.EnableRandomAttachments.description",
-      "value": "Add random compatible attachments to generated weapons."
+      "value": "يضيف ملحقات عشوائية متوافقة إلى الأسلحة المولدة."
     },
     {
       "key": "entry.Random Upgrades.AttachmentChance.name",
-      "value": "Attachment Chance"
+      "value": "فرصة الملحقات"
     },
     {
       "key": "entry.Random Upgrades.AttachmentChance.description",
-      "value": "Chance for a generated weapon to receive attachments. 0 = never, 1 = always."
+      "value": "فرصة حصول السلاح المولد على ملحقات. 0 = أبدًا، 1 = دائمًا."
     },
     {
       "key": "entry.Random Upgrades.MinAttachmentCount.name",
-      "value": "Min Attachment Count"
+      "value": "أقل عدد من الملحقات"
     },
     {
       "key": "entry.Random Upgrades.MinAttachmentCount.description",
-      "value": "Minimum attachments if attachment generation succeeds."
+      "value": "أقل عدد من الملحقات عند الحصول عليها."
     },
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.name",
-      "value": "Max Attachment Count"
+      "value": "أكبر عدد من الملحقات"
     },
     {
       "key": "entry.Random Upgrades.MaxAttachmentCount.description",
-      "value": "Maximum attachments if attachment generation succeeds."
+      "value": "أكبر عدد من الملحقات عند الحصول عليها."
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.name",
+      "value": "تفعيل تغيير العيار العشوائي"
+    },
+    {
+      "key": "entry.Random Upgrades.EnableRandomRechamber.description",
+      "value": "يتيح للأسلحة المولدة الحصول على عيار مختلف."
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.name",
+      "value": "فرصة تغيير العيار"
+    },
+    {
+      "key": "entry.Random Upgrades.RechamberChance.description",
+      "value": "فرصة تغير عيار السلاح المولد. 0 = أبدًا، 1 = دائمًا."
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.name",
+      "value": "أقصى نسبة ضرر لتغيير العيار"
+    },
+    {
+      "key": "entry.Random Upgrades.MaxRechamberDamageRatio.description",
+      "value": "يتم تخطي العيار إذا كان سيضاعف ضرر السلاح لكل طلقة بأكثر من هذه القيمة."
     },
     {
       "key": "entry.Safety.FixLowDurability.name",
-      "value": "Fix Low Durability"
+      "value": "إصلاح المتانة المنخفضة"
     },
     {
       "key": "entry.Safety.FixLowDurability.description",
-      "value": "Raise generated weapon durability to MinimumDurabilityNormalized if it is lower."
+      "value": "يرفع متانة السلاح المولد إلى الحد الأدنى للمتانة إذا كانت أقل منه."
     },
     {
       "key": "entry.Safety.MinimumDurabilityNormalized.name",
-      "value": "Minimum Durability Normalized"
+      "value": "الحد الأدنى لنسبة المتانة"
     },
     {
       "key": "entry.Safety.MinimumDurabilityNormalized.description",
-      "value": "Minimum durability for generated weapons. 0.5 = at least 50%."
+      "value": "الحد الأدنى لمتانة الأسلحة المولدة. 0.5 = 50% على الأقل."
     },
     {
       "key": "value.General.PreferredWeaponSlot.Weapon0",
@@ -370,7 +394,7 @@
     },
     {
       "key": "value.General.PreferredWeaponSlot.FirstAvailable",
-      "value": "أول متاح"
+      "value": "الخانة الفارغة أولًا"
     }
   ]
 }
